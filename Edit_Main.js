@@ -1,8 +1,9 @@
 const scriptName = "Edit Main";
-
+Jsoup = org.jsoup.Jsoup
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
   
-
+	msg = msg.trim();
+	sender = sender.trim().replace("~#~", "");
 	try {
 		if (msg.startsWith("/")&&sender == '이상수') {
 		  replier.reply(room, eval(msg.slice(1)));
