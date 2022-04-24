@@ -4,7 +4,7 @@ Jsoup = org.jsoup.Jsoup;
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
   msg = msg.trim();
   sender = sender.trim().replace("~#~", "");
-  
+
   try {
     if (msg.startsWith("/") && sender == '이상수') {
       replier.reply(room, eval(msg.slice(1)));
@@ -14,16 +14,18 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 }
 
   function get(url) {
-  if (!/^https?:\/\/github.com/.test(url)) 
-    throw new Error('INVALID URL.');
-  const Code_ = Jsoup.connect(url.replace('/blob/', '/raw/')).ignoreHttpErrors(true).execute();
-  if (!Code_.header('content-length')) 
-    throw new Error('INVALID URL.');
-  return Code_.body();
-};
+    if (!/^https?:\/\/github.com/.test(url)) 
+      throw new Error('INVALID URL.');
+    const Code_ = Jsoup.connect(url.replace('/blob/', '/raw/')).ignoreHttpErrors(true).execute();
+    if (!Code_.header('content-length')) 
+      throw new Error('INVALID URL.');
+    return Code_.body();
+  }
+  ;
   function apply(url) {
-  FileStream.write('/sdcard/msgbot/Bots/Main/Main.js', get(url));
-  replier.reply('SUCCESSFULLY APPLIED.');
-  return Api.reload('Main');
-};
+	FileStream.write('/sdcard/msgbot/Bots/Main/Backup/'+Date.now().toString()+'.js', FileStream.read('/sdcard/msgbot/Bots/Main/Main.js'));
+    FileStream.write('/sdcard/msgbot/Bots/Main/Main.js', get(url));
+    return Api.reload('Main') , 'SUCCESSFULLY APPLIED.';
+  }
+  ;
 }
