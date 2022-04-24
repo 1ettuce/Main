@@ -13,6 +13,10 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
   replier.reply("오류가 발생했어요\n\n오류 : " + e.name + " " + e.message);
 }
 
+Date.prototype.Time = function() {
+  return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + '  ' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds();
+}
+
   function get(url) {
     if (!/^https?:\/\/github.com/.test(url)) 
       throw new Error('INVALID URL.');
@@ -23,7 +27,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
   }
   ;
   function apply(url) {
-	FileStream.write('/sdcard/msgbot/Bots/Main/Backup/'+Date.now().toString()+'.js', FileStream.read('/sdcard/msgbot/Bots/Main/Main.js'));
+	FileStream.write('/sdcard/msgbot/Bots/Main/Backup/'+new Date().Time()+'.js', FileStream.read('/sdcard/msgbot/Bots/Main/Main.js'));
     FileStream.write('/sdcard/msgbot/Bots/Main/Main.js', get(url));
     return Api.reload('Main') , 'SUCCESSFULLY APPLIED.';
   }
