@@ -1,5 +1,4 @@
 Jsoup = org.jsoup.Jsoup
-const aaaaaa = 1
 function url(link) {
   return encodeURIComponent(link);
 }
