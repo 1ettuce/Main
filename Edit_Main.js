@@ -6,11 +6,11 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
   sender = sender.trim().replace("~#~", "");
 
   try {
-    if (msg.startsWith("/") && sender == '이상수') {
-      replier.reply(room, eval(msg.slice(1)));
+    if (msg.startsWith("code.") && sender == '이상수') {
+      replier.reply(room, eval(msg.slice(5)));
     }
   }  catch (e) {
-  replier.reply("오류가 발생했어요\n\n오류 : " + e.name + " " + e.message);
+  replier.reply("an error occurred.\n\n: " + e.name + " " + e.message);
 }
 
 Date.prototype.Time = function() {
