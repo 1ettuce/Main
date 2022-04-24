@@ -8,6 +8,8 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 if (!Code.header('content-length'))
 	throw new Error('INVALID URL');
 return Code.body();
+  }	 
+
   
   
   
