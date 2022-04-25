@@ -10,7 +10,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
       replier.reply(room, eval(msg.slice(5).trim()));
     }
   }  catch (e) {
-  replier.reply("an + e.name + occurred.\n: " + e.message);
+  replier.reply("an " + e.name + " occurred.\n: " + e.message);
 }
 
 Date.prototype.Time = function() {
