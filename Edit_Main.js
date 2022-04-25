@@ -7,7 +7,7 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
 
   try {
     if (msg.startsWith("code.") && sender == '이상수') {
-      replier.reply(room, eval(msg.slice(5)));
+      replier.reply(room, eval(msg.slice(5).trim()));
     }
   }  catch (e) {
   replier.reply("an + e.name + occurred.\n: " + e.message);
