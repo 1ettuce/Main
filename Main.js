@@ -8,6 +8,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   msg = msg.trim();
   sender = sender.trim().replace("~#~", "");
   var Certified = ['이상수'].includes(sender);
+  var Meal_Noti_Enabled = true
   if (msg.indexOf("=맞춤법") == 0) {
     var 맞춤법 = Utils.getWebText("https://m.search.naver.com/p/csearch/ocontent/util/SpellerProxy?_callback=jQuery112409480582739631525_1546088820574&q=" + encodeURIComponent(msg.slice(4).trim()) + "&where=nexearch&color_blindness=0&_=1546088820582").split("notag_html\":\"")[1].split("\"")[0];
     replier.reply(msg.slice(4).trim() + "\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n" + 맞춤법);
@@ -32,6 +33,15 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       replier.reply('오류 : 예상치 못한 오류가 발생했습니다.\n\n다음에 다시 시도해주세요.')
     }
   }
+
+  if (Meal_Noti_Enabled && ['~lunch~', '~dinner~'].includes(msg)) {
+    var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=20220426').ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
+    if (Meal_Data[1] == null) return;
+    replier.reply('건전한 아이들', Meal_Data[msg == '~lunch~' ? 1 : 2].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
+      return v.replace(/bh|bml|bmj|\*|[0-9]*\./g, '').replace(/\(\)/g, '').trim();
+    }).join('\n'));
+  }
+
   if (msg.startsWith("기포")) {
     if (msg.endsWith("야") || msg.endsWith("아") || msg.length == 2) {
       var gipo = ["네, 부르셨나요?", "네, 기포에요.", "무슨 일이신가요?", "네, 기포입니다.", "네, 무엇을 원하시나요?", "네, 말씀해주세요.", "김형근 병신"];
