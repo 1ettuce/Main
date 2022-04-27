@@ -35,11 +35,15 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   }
 
   if (Meal_Noti_Enabled && ['~lunch~', '~dinner~'].includes(msg)) {
-    var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=20220426').ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
-    if (Meal_Data[1] == null) return;
-    replier.reply('건전한 아이들', Meal_Data[msg == '~lunch~' ? 1 : 2].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
-      return v.replace(/bh|bml|bmj|\*|[0-9]*\./g, '').replace(/\(\)/g, '').trim();
-    }).join('\n'));
+    try {
+      var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=20220426').ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
+      if (Meal_Data[1] == null) return;
+      replier.reply('건전한 아이들', Meal_Data[msg == '~lunch~' ? 1 : 2].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
+        return v.replace(/bh|bml|bmj|\*|[0-9]*\./g, '').replace(/\(\)/g, '').trim();
+      }).join('\n'));
+    } catch (e) {
+      replier.reply('Error: ' + e.message);
+    }
   }
 
   if (msg.startsWith("기포")) {
