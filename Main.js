@@ -9,7 +9,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   sender = sender.trim().replace("~#~", "");
   var Certified = ['이상수'].includes(sender);
   var Meal_Noti_Enabled = true;
-  var Meal_Noti_Room = '건전한 아이들';
+  var Meal_Noti_Room = room;
   if (msg.indexOf("=맞춤법") == 0) {
     var 맞춤법 = Utils.getWebText("https://m.search.naver.com/p/csearch/ocontent/util/SpellerProxy?_callback=jQuery112409480582739631525_1546088820574&q=" + encodeURIComponent(msg.slice(4).trim()) + "&where=nexearch&color_blindness=0&_=1546088820582").split("notag_html\":\"")[1].split("\"")[0];
     replier.reply(msg.slice(4).trim() + "\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n" + 맞춤법);
