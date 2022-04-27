@@ -42,7 +42,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       var Meal_Pre_Date3 = String(Meal_Pre_Date1.getDate());
       var Meal_Date = /\d{8}$/g.test(msg) ? msg.replace(/meal\.lunch|meal\.dinner/g, '').trim() : Meal_Pre_Date1.getFullYear() + (Meal_Pre_Date2 > 10 ? Meal_Pre_Date2 : "0" + Meal_Pre_Date2) + (Meal_Pre_Date3 > 10 ? Meal_Pre_Date3 : "0" + Meal_Pre_Date3);
       var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
-      if (Meal_Data[1] == null) throw new Error('INVALID DATE');
+      if (Meal_Data[1] == null) throw new Error('NO MEAL DATA.');
       replier.reply(Meal_Noti_Room, Meal_Data[msg.startsWith('meal.lunch') ? 1 : 2].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
         return v.replace(/bh|bml|bmj|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
       }).join('\n'));
