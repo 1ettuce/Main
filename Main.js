@@ -9,7 +9,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   sender = sender.trim().replace("~#~", "");
   var Certified = ['이상수'].includes(sender);
   var Meal_Noti_Enabled = true;
-  var Meal_Noti_Room = room;
+  var Meal_Noti_Room = '건전한 아이들';
   if (msg.indexOf("=맞춤법") == 0) {
     var 맞춤법 = Utils.getWebText("https://m.search.naver.com/p/csearch/ocontent/util/SpellerProxy?_callback=jQuery112409480582739631525_1546088820574&q=" + encodeURIComponent(msg.slice(4).trim()) + "&where=nexearch&color_blindness=0&_=1546088820582").split("notag_html\":\"")[1].split("\"")[0];
     replier.reply(msg.slice(4).trim() + "\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n" + 맞춤법);
@@ -42,7 +42,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       var Meal_Pre_Date3 = String(Meal_Pre_Date1.getDate());
       var Meal_Date = /\d{8}$/g.test(msg) ? msg.replace(/meal\.lunch|meal\.dinner/g, '').trim() : Meal_Pre_Date1.getFullYear() + (Meal_Pre_Date2 > 10 ? Meal_Pre_Date2 : "0" + Meal_Pre_Date2) + (Meal_Pre_Date3 > 10 ? Meal_Pre_Date3 : "0" + Meal_Pre_Date3);
       var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
-      if (Meal_Data[1] == null) throw new Error('NO MEAL DATA.');
+      if (Meal_Data[1] == null) return;
       replier.reply(Meal_Noti_Room, Meal_Data[msg.startsWith('meal.lunch') ? 1 : 2].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
         return v.replace(/bh|bml|bmj|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
       }).join('\n'));
