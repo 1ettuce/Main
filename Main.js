@@ -118,12 +118,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     replier.reply(((parseInt(msg.slice(5).trim()) / 5600).toFixed(1) + "국밥").replace(".0", ""));
   }
 
-  if (msg.startsWith('=BMI')) {
+  if (msg.toLowerCase().startsWith('=BMI'.toLowerCase())) {
     var Pre_BMI = msg.slice(4).trim().split(' ');
     var BMI = (Pre_BMI.length == 2 ? Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2) : Pre_BMI[0]).toFixed(2);
     switch (true) {
       case BMI < 10:
-        replier.reply('BMI ' + BMI + '(스켈레톤)')
+        replier.reply('BMI ' + BMI + '(스켈레톤)');
+        break;
       case BMI < 16:
         replier.reply('BMI ' + BMI + '(사회복무요원)');
         break;
