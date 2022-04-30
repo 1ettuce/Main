@@ -120,24 +120,24 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   if (msg.startsWith('=BMI')) {
     var Pre_BMI = msg.slice(4).trim().split(' ');
-    var BMI = Pre_BMI.length == 2 ? Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2) : Pre_BMI[0]
+    var BMI = (Pre_BMI.length == 2 ? Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2) : Pre_BMI[0]).toFixed(2);
     switch (true) {
       case BMI < 10:
-        replier.reply('BMI  ' + BMI + '(스켈레톤)')
+        replier.reply('BMI ' + BMI + '(스켈레톤)')
       case BMI < 16:
-        replier.reply('BMI  ' + BMI + '(사회복무요원)');
+        replier.reply('BMI ' + BMI + '(사회복무요원)');
         break;
       case BMI < 18.5:
-        replier.reply('BMI  ' + BMI + '(저체중)');
+        replier.reply('BMI ' + BMI + '(저체중)');
         break;
       case BMI < 23:
-        replier.reply('BMI  ' + BMI + '(정상)');
+        replier.reply('BMI ' + BMI + '(정상)');
         break;
       case BMI < 25:
-        replier.reply('BMI  ' + BMI + '(과체중)');
+        replier.reply('BMI ' + BMI + '(과체중)');
         break;
       case BMI < 30:
-        replier.reply('BMI  ' + BMI + '(비만)');
+        replier.reply('BMI ' + BMI + '(비만)');
         break;
       case BMI < 35:
         replier.reply('BMI ' + BMI + '(고도비만)');
@@ -146,7 +146,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         replier.reply('BMI ' + BMI + '(사회복무요원)');
         break;
       case BMI > 40:
-        replier.reply('BMI  ' + BMI + '(자살 요망)');
+        replier.reply('BMI ' + BMI + '(자살 요망)');
         break;
     }
   }
