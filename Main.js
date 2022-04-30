@@ -144,14 +144,14 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       case BMI < 35:
         replier.reply('BMI ' + BMI + '(고도비만)');
         break;
-      case BMI < 35:
-        replier.reply('BMI ' + BMI + '(사회복무요원)');
-        break;
       case BMI > 40:
         replier.reply('BMI ' + BMI + '(자살 요망)');
         break;
+      case BMI >= 35:
+        replier.reply('BMI ' + BMI + '(사회복무요원)');
+        break;
       default:
-        replier.reply(BMI+'는 잘못된 입력입니다.');
+        replier.reply(BMI + '는 잘못된 입력입니다.');
         break;
     }
   }
