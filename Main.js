@@ -121,7 +121,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   if (msg.toLowerCase().startsWith('=BMI'.toLowerCase())) {
     var Pre_BMI = msg.slice(4).trim().split(' ');
     var BMI = Pre_BMI.length == 2 ? Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2) : Pre_BMI[0]
-    isNaN(BMI) ? BMI = BMI : Number(BMI).toFixed(2);
+    isNaN(BMI) ? BMI = BMI : BMI = Number(BMI).toFixed(2);
     switch (true) {
       case BMI < 10:
         replier.reply('BMI ' + BMI + '(스켈레톤)');
