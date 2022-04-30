@@ -151,7 +151,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         replier.reply('BMI ' + BMI + '(사회복무요원)');
         break;
       default:
-        replier.reply(BMI + '는 잘못된 입력입니다.');
+        replier.reply(BMI + BMI.Particle(['은', '는']) + ' 잘못된 입력입니다.');
         break;
     }
   }
@@ -187,6 +187,10 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   function SplitNum(value) {
     value = (typeof value !== 'undefined') ? value : 0;
     return value.toString().replace(/(\d+?)((?=(?:\d{3})+(?!\d)))/g, "$1,$2");
+  }
+
+  String.prototype.Particle = function (Array) {
+    return str.slice(-1).normalize('NFKD')[2] ? Array[0] : Array[1];
   }
 
   try {
