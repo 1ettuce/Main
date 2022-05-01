@@ -126,7 +126,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     } else {
       Pre_BMI = Pre_BMI.split(' ');
     }
-    var BMI = Pre_BMI.length == 1 ? (+Pre_BMI[0]).toFixed(2) : (Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2)).toFixed(2)
+    var BMI = Pre_BMI.length == 1 ? parseFloat((+Pre_BMI[0]).toFixed(2)) : parseFloat((Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2)).toFixed(2))
     switch (true) {
       case BMI < 10:
         replier.reply('BMI ' + BMI + '(스켈레톤)');
