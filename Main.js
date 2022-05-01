@@ -127,7 +127,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       Pre_BMI = Pre_BMI.split(' ');
     }
     var BMI = Pre_BMI.length == 1 ? parseFloat((+Pre_BMI[0]).toFixed(2)) : parseFloat((Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2)).toFixed(2));
-    replier.reply('BMI ' + BMI + '(' + ((BMI > 40) ? '자살요망' : (BMI < 16 || BMI >= 35) ? '사회복무요원' : (BMI < 18.5) ? '저체중' : (BMI < 23) ? '정상' : (BMI < 25) ? '과체중' : (BMI < 30) ? '비만' : '고도비만') + ')');
+    replier.reply('BMI ' + BMI + '(' + ((BMI > 50) ? '자살요망' : (BMI < 16 || BMI >= 35) ? '사회복무요원' : (BMI < 18.5) ? '저체중' : (BMI < 23) ? '정상' : (BMI < 25) ? '과체중' : (BMI < 30) ? '비만' : '고도비만') + ')');
   }
 
 
