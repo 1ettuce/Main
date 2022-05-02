@@ -4,6 +4,10 @@ function url(link) {
   return encodeURIComponent(link);
 }
 
+String.prototype.Particle = function (Array) {
+  return this.slice(-1).normalize('NFKD')[2] ? Array[0] : Array[1];
+}
+
 function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName, threadId) {
   msg = msg.trim();
   room = room.trim();
@@ -161,10 +165,6 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   function SplitNum(value) {
     value = (typeof value !== 'undefined') ? value : 0;
     return value.toString().replace(/(\d+?)((?=(?:\d{3})+(?!\d)))/g, "$1,$2");
-  }
-
-  String.prototype.Particle = function (Array) {
-    return str.slice(-1).normalize('NFKD')[2] ? Array[0] : Array[1];
   }
 
   try {
