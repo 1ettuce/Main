@@ -12,16 +12,22 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   msg = msg.trim();
   room = room.trim();
   sender = sender.trim().replace("~#~", "");
-  if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', 'Noti_Room'].includes(room)) return;
   var Certified = ['이상수'].includes(sender);
   var Meal_Noti_Room = '건전한 아이들';
+
+/************절취선************/
+
+  if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', 'Noti_Room'].includes(room)) return;
+
   if (msg.indexOf("=맞춤법") == 0) {
     var 맞춤법 = Utils.getWebText("https://m.search.naver.com/p/csearch/ocontent/util/SpellerProxy?_callback=jQuery112409480582739631525_1546088820574&q=" + encodeURIComponent(msg.slice(4).trim()) + "&where=nexearch&color_blindness=0&_=1546088820582").split("notag_html\":\"")[1].split("\"")[0];
     replier.reply(msg.slice(4).trim() + "\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n" + 맞춤법);
   }
+
   if (msg.startsWith("=룰렛")) {
     replier.reply(msg.slice(3).split(",")[Math.floor(Math.random() * msg.slice(3).split(",").length)].trim());
   }
+
   if (msg.indexOf("=로마자") == 0) {
     try {
       var roma = Utils.getWebText("http://roman.cs.pusan.ac.kr/result_all.aspx?input=" + url(msg.slice(4).trim())).split("<span id=\"outputRMNormal\">")[1].split("</span>")[0];
@@ -31,6 +37,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
     replier.reply(msg.slice(4).trim() + "\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n" + roma);
   }
+
   if (msg.startsWith('=이름')) {
     try {
       var get_name = JSON.parse(Jsoup.connect('https://koreanname.me/api/name/' + url(msg.slice(3).trim())).ignoreContentType(true).execute().body())
@@ -48,7 +55,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       var Meal_Date = /\d{8}$/g.test(msg) ? msg.replace(/meal\.lunch|meal\.dinner/g, '').trim() : Meal_Pre_Date1.getFullYear() + (Meal_Pre_Date2 > 10 ? Meal_Pre_Date2 : "0" + Meal_Pre_Date2) + (Meal_Pre_Date3 > 10 ? Meal_Pre_Date3 : "0" + Meal_Pre_Date3);
       var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
       if (Meal_Data[1] == null) return;
-      replier.reply(Meal_Noti_Room, Meal_Pre_Date2+'월 '+Meal_Pre_Date3+'일  ['+['중식','석식'][msg.startsWith('meal.lunch') ? 0 : 1]+']\n'+Meal_Data[msg.startsWith('meal.lunch') ? 1 : 2].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
+      replier.reply(Meal_Noti_Room, Meal_Pre_Date2 + '월 ' + Meal_Pre_Date3 + '일  [' + ['중식', '석식'][msg.startsWith('meal.lunch') ? 0 : 1] + ']\n' + Meal_Data[msg.startsWith('meal.lunch') ? 1 : 2].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
         return v.replace(/bh|bml|bmj|bm|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
       }).join('\n'));
     } catch (e) {
@@ -63,11 +70,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       replier.reply(gipo[r]);
     }
   }
+
   if (msg.match(/(안녕|반가워|하이|헬로|안뇽|ㅎㅇ|반갑다|반갑노|안녕하노|노무현)$/) && msg.indexOf("기포") == 0) {
     var gipo = ["안녕하세요.", "안녕하세요, 기포에요.", "안녕하세요, 무엇을 원하시나요?", "안녕하세요, 전 기포에요.", "반가워요, 기포에요.", "안녕하세요, 무엇을 도와드릴까요?", "네, 안녕하세요."];
     var r = Math.floor(Math.random() * gipo.length);
     replier.reply(gipo[r]);
   }
+
   if (msg.startsWith("기포")) {
     if (msg.match(/(코로나|확진자|감염자)/) && msg.replace(/ /g, "").replace("?", "").match(/(보여줘|몇명이야|알려줘|구해줘|코로나|확진자|감염자|몇명|몇명임|몇명이노|몇명이누|몇이노)$/)) {
       try {
@@ -103,12 +112,14 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       replier.reply("지역별 코로나-19 확진자를 불러왔어요.\n\n" + j.join("\n") + "\n\n국내발생 : " + daily_corona[0] + "명\n해외유입 : " + daily_corona[1] + "명\n합계 : " + (daily_corona[0] + daily_corona[1]) + "명\n\n총확진자 : " + SplitNum(corona_people["confirmed"]) + "명\n사망자 : " + SplitNum(corona_people["death"]) + "명\n격리해제 : " + SplitNum(corona_people["released"]) + "명\n마지막 업데이트 : " + corona_time);
     }
   }
+
   if (msg.endsWith('ㅋㅋ')) {
     if ((Math.random() * 13) < 2) {
       java.lang.Thread.sleep(5000);
       replier.reply('ㄷㄷ');
     }
   }
+
   if (msg.startsWith('=계산')) {
     var calculated = JSON.parse(Jsoup.connect('https://m.search.naver.com/p/csearch/content/qapirender.nhn?_callback=window.__jindo2_callback._calculate_0&where=nexearch&pkid=69&q=' + encodeURIComponent(msg.slice(3).trim()) + '&p9=0').ignoreContentType(true).execute().body().match(/\((.*?)\)/)[1])['result']
     replier.reply(calculated['status'] == 'success' ? calculated['value'] : '계산 실패')
@@ -133,8 +144,6 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     var BMI = Pre_BMI.length == 1 ? parseFloat((+Pre_BMI[0]).toFixed(2)) : parseFloat((Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2)).toFixed(2));
     replier.reply('BMI ' + BMI + '(' + ((BMI > 50) ? '자살요망' : (BMI < 16 || BMI >= 35) ? '사회복무요원' : (BMI < 18.5) ? '저체중' : (BMI < 23) ? '정상' : (BMI < 25) ? '과체중' : (BMI < 30) ? '비만' : '고도비만') + ')');
   }
-
-
 
   function similarity(s1, s2) {
     if (s1 == s2) return 1;
