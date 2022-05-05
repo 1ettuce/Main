@@ -15,7 +15,9 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   var Certified = ['이상수'].includes(sender);
   var Meal_Noti_Room = '건전한 아이들';
 
-/************절취선************/
+  /************절취선************/
+
+  replier.markAsRead();
 
   if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', 'Noti_Room'].includes(room)) return;
 
