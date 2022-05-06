@@ -14,13 +14,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   sender = sender.trim().replace("~#~", "");
   var Certified = ['이상수'].includes(sender);
   var Meal_Noti_Room = '건전한 아이들';
-  var Noti_Room = ['Noti_Room']
+  var Noti_Room = ['Noti_Room','Moti_Room']
 
   /************절취선************/
 
-  replier.markAsRead();
-
   if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', Noti_Room].includes(room)) return;
+
+  replier.markAsRead();
 
   if (msg.indexOf("=맞춤법") == 0) {
     var 맞춤법 = Utils.getWebText("https://m.search.naver.com/p/csearch/ocontent/util/SpellerProxy?_callback=jQuery112409480582739631525_1546088820574&q=" + encodeURIComponent(msg.slice(4).trim()) + "&where=nexearch&color_blindness=0&_=1546088820582").split("notag_html\":\"")[1].split("\"")[0];
