@@ -54,12 +54,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       var Meal_Pre_Date1 = new Date();
       var Meal_Pre_Date2 = String(Meal_Pre_Date1.getMonth() + 1);
       var Meal_Pre_Date3 = String(Meal_Pre_Date1.getDate());
-      var Meal_Date = /\d{8}$/g.test(msg) ? msg.replace(/meal\.lunch|meal\.dinner/g, '').trim() : Meal_Pre_Date1.getFullYear() + (Meal_Pre_Date2 > 10 ? Meal_Pre_Date2 : "0" + Meal_Pre_Date2) + (Meal_Pre_Date3 > 10 ? Meal_Pre_Date3 : "0" + Meal_Pre_Date3);
+      var Meal_Show_Date = Meal_Pre_Date1.getFullYear() + '/' + (Meal_Pre_Date2 > 10 ? Meal_Pre_Date2 : "0" + Meal_Pre_Date2) + '/' + (Meal_Pre_Date3 > 10 ? Meal_Pre_Date3 : "0" + Meal_Pre_Date3);
+      var Meal_Date = /\d{8}$/g.test(msg) ? msg.replace(/meal\.lunch|meal\.dinner/g, '').trim() : Meal_Show_Date.replace(/\//g, '');
       var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
       if (Meal_Data[1] == null) return;
-      replier.reply(Meal_Noti_Room, Meal_Pre_Date2 + '월 ' + Meal_Pre_Date3 + '일  [' + ['중식', '석식'][msg.startsWith('meal.dinner') ? 1 : 0] + ']\n' + Meal_Data[msg.startsWith('meal.dinner') ? 2 : 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
-        return v.replace(/bh|bml|bmj|bm|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
-      }).join('\n'));
+      replier.reply(Meal_Noti_Room, Meal_Show_Date + '    [' + ['중식', '석식'][msg.startsWith('meal.dinner') ? 1 : 0] + ']\n━━━━━━━━━━' + Meal_Data[msg.startsWith('meal.dinner') ? 2 : 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
+        return '-' + v.replace(/bh|bml|bmj|bm|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
+      }).join('\n') + '━━━━━━━━━━');
     } catch (e) {
       replier.reply('Error: ' + e.message);
     }
