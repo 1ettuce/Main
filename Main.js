@@ -18,7 +18,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   /************절취선************/
 
-  if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', Noti_Room].includes(room)) return;
+  if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3'].concat(Noti_Room).includes(room)) return;
 
   replier.markAsRead();
 
