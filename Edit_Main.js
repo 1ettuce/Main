@@ -1,6 +1,10 @@
 const scriptName = "Edit Main";
 Jsoup = org.jsoup.Jsoup;
 
+Date.prototype.Time = function () {
+  return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + '  ' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds();
+}
+
 function response(room, msg, sender, isGroupChat, replier, imageDB, packageName) {
   msg = msg.trim();
   sender = sender.trim().replace("~#~", "");
@@ -11,10 +15,6 @@ function response(room, msg, sender, isGroupChat, replier, imageDB, packageName)
     }
   } catch (e) {
     replier.reply("an " + e.name + " occurred.\n: " + e.message);
-  }
-
-  Date.prototype.Time = function () {
-    return this.getFullYear() + '-' + (this.getMonth() + 1) + '-' + this.getDate() + '  ' + this.getHours() + ':' + this.getMinutes() + ':' + this.getSeconds();
   }
 
   function get(url) {
