@@ -63,7 +63,10 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       var Meal_Date_Data1 = msg.replace(/meal.|lunch|dinner/g, '').trim();
       var Meal_Date = Meal_Date_Data1.match(/^\d{4}\/\d{1,2}\/\d{1,2}$/g) ? Meal_Date_Data1.split(/\D/g) : Meal_Date_Data1.match(/^\d{8}$/g) ? [Meal_Date_Data1.substr(0, 4), Meal_Date_Data1.substr(4, 2), Meal_Date_Data1.substr(6, 2)] : Meal_Date_Data1.match(/^\d{6}$/g) ? [Meal_Date_Data1.substr(0, 4), Meal_Date_Data1.substr(4, 1), Meal_Date_Data1.substr(5, 1)] : Meal_Date_Data1.match(/^\d{7}$/g) ? [Meal_Date_Data1.substr(0, 4), Meal_Date_Data1.substr(4, 2), Meal_Date_Data1.substr(6, 1)] : [Meal_New_Date.getFullYear(), Meal_New_Date.getMonth() + 1 > 10 ? Meal_New_Date.getMonth() + 1 : "0" + (Meal_New_Date.getMonth() + 1), Meal_New_Date.getDate() > 10 ? Meal_New_Date.getDate() : "0" + Meal_New_Date.getDate()];
       var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date.join('')).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
-      if (Meal_Data[1] == null) return;
+      if ([0,6].includes(new Date(Meal_Date.join('/')).getDay()) || Meal_Data[1] == null) {
+        replier.reply('데이터가 없습니다.');
+        return;
+      }
       replier.reply(Noti_Room.includes(room) ? Meal_Noti_Room : room, Meal_Date.join('/') + '    [' + ['중식', '석식'][msg.startsWith('meal.dinner') ? 1 : 0] + ']\n━━━━━━━━━━\n' + Meal_Data[msg.startsWith('meal.dinner') ? 2 : 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
         return '-' + v.replace(/bh|bml|bmj|bm|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
       }).join('\n') + '\n━━━━━━━━━━');
@@ -148,7 +151,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     replier.reply(((parseInt(msg.slice(5).trim()) / 5600).toFixed(1) + "국밥").replace(".0", ""));
   }
 
-  
+
   if (msg.toLowerCase().startsWith('=BMI'.toLowerCase())) {
     var Pre_BMI = msg.slice(4).trim();
     if (isNaN(Pre_BMI.replace(/ /g, ""))) {
