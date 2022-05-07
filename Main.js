@@ -16,9 +16,12 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   var Meal_Noti_Room = '건전한 아이들';
   var Noti_Room = ['Noti_Room']
 
-  /************절취선************/
+
+  /******************절취선******************/
+
 
   replier.markAsRead();
+
 
   if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3'].concat(Noti_Room).includes(room)) return;
 
@@ -27,9 +30,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     replier.reply(msg.slice(4).trim() + "\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n" + 맞춤법);
   }
 
+
   if (msg.startsWith("=룰렛")) {
     replier.reply(msg.slice(3).split(",")[Math.floor(Math.random() * msg.slice(3).split(",").length)].trim());
   }
+
 
   if (msg.indexOf("=로마자") == 0) {
     try {
@@ -41,6 +46,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     replier.reply(msg.slice(4).trim() + "\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n" + roma);
   }
 
+
   if (msg.startsWith('=이름')) {
     try {
       var get_name = JSON.parse(Jsoup.connect('https://koreanname.me/api/name/' + url(msg.slice(3).trim())).ignoreContentType(true).execute().body())
@@ -49,6 +55,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       replier.reply('오류 : 예상치 못한 오류가 발생했습니다.\n\n다음에 다시 시도해주세요.')
     }
   }
+
 
   if (msg.startsWith('meal.')) {
     try {
@@ -65,6 +72,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
   }
 
+
   if (msg.startsWith("기포")) {
     if (msg.endsWith("야") || msg.endsWith("아") || msg.length == 2) {
       var gipo = ["네, 부르셨나요?", "네, 기포에요.", "무슨 일이신가요?", "네, 기포입니다.", "네, 무엇을 원하시나요?", "네, 말씀해주세요.", "김형근 병신"];
@@ -73,11 +81,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
   }
 
+
   if (msg.match(/(안녕|반가워|하이|헬로|안뇽|ㅎㅇ|반갑다|반갑노|안녕하노|노무현)$/) && msg.indexOf("기포") == 0) {
     var gipo = ["안녕하세요.", "안녕하세요, 기포에요.", "안녕하세요, 무엇을 원하시나요?", "안녕하세요, 전 기포에요.", "반가워요, 기포에요.", "안녕하세요, 무엇을 도와드릴까요?", "네, 안녕하세요."];
     var r = Math.floor(Math.random() * gipo.length);
     replier.reply(gipo[r]);
   }
+
 
   if (msg.startsWith("기포")) {
     if (msg.match(/(코로나|확진자|감염자)/) && msg.replace(/ /g, "").replace("?", "").match(/(보여줘|몇명이야|알려줘|구해줘|코로나|확진자|감염자|몇명|몇명임|몇명이노|몇명이누|몇이노)$/)) {
@@ -115,6 +125,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
   }
 
+
   if (msg.endsWith('ㅋㅋ')) {
     if ((Math.random() * 13) < 2) {
       java.lang.Thread.sleep(5000);
@@ -122,10 +133,12 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
   }
 
+
   if (msg.startsWith('=계산')) {
     var calculated = JSON.parse(Jsoup.connect('https://m.search.naver.com/p/csearch/content/qapirender.nhn?_callback=window.__jindo2_callback._calculate_0&where=nexearch&pkid=69&q=' + encodeURIComponent(msg.slice(3).trim()) + '&p9=0').ignoreContentType(true).execute().body().match(/\((.*?)\)/)[1])['result']
     replier.reply(calculated['status'] == 'success' ? calculated['value'] : '계산 실패')
   }
+
 
   if (msg.startsWith("=국밥계산")) {
     if (isNaN(msg.slice(5).trim())) {
@@ -135,6 +148,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     replier.reply(((parseInt(msg.slice(5).trim()) / 5600).toFixed(1) + "국밥").replace(".0", ""));
   }
 
+  
   if (msg.toLowerCase().startsWith('=BMI'.toLowerCase())) {
     var Pre_BMI = msg.slice(4).trim();
     if (isNaN(Pre_BMI.replace(/ /g, ""))) {
@@ -146,6 +160,10 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     var BMI = Pre_BMI.length == 1 ? parseFloat((+Pre_BMI[0]).toFixed(2)) : parseFloat((Pre_BMI[1] / Math.pow(Pre_BMI[0] / 100, 2)).toFixed(2));
     replier.reply('BMI ' + BMI + '(' + ((BMI > 50) ? '자살요망' : (BMI < 16 || BMI >= 35) ? '사회복무요원' : (BMI < 18.5) ? '저체중' : (BMI < 23) ? '정상' : (BMI < 25) ? '과체중' : (BMI < 30) ? '비만' : '고도비만') + ')');
   }
+
+
+  /******************함수******************/
+
 
   function similarity(s1, s2) {
     if (s1 == s2) return 1;
@@ -177,6 +195,10 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     value = (typeof value !== 'undefined') ? value : 0;
     return value.toString().replace(/(\d+?)((?=(?:\d{3})+(?!\d)))/g, "$1,$2");
   }
+
+
+  /******************함수******************/
+
 
   try {
     if (Certified && msg.indexOf("*") == 0) {
