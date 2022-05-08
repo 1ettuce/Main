@@ -63,7 +63,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       var Meal_Date_Data1 = msg.replace(/meal.|lunch|dinner/g, '').trim();
       var Meal_Date = Meal_Date_Data1.match(/^\d{4}\/\d{1,2}\/\d{1,2}$/g) ? Meal_Date_Data1.split(/\D/g) : Meal_Date_Data1.match(/^\d{6,8}$/g) ? [Meal_Date_Data1.substr(0, 4), Meal_Date_Data1.substr(4, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2), Meal_Date_Data1.substr(Meal_Date_Data1.match(/^\d{6}$/g) ? 5 : 6, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2)] : [Meal_New_Date.getFullYear(), Meal_New_Date.getMonth() + 1 > 10 ? Meal_New_Date.getMonth() + 1 : "0" + (Meal_New_Date.getMonth() + 1), Meal_New_Date.getDate() > 10 ? Meal_New_Date.getDate() : "0" + Meal_New_Date.getDate()];
       var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date.join('')).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
-      if ([0, 6].includes(new Date(Meal_Date.join('/')).getDay()) || Meal_Data[1] == null) {
+      if (Meal_Data[1] == null) {
         replier.reply('데이터가 없습니다' + (Meal_Date_Data1 != '' ? '.\n날짜를 올바르게 입력하셨나요?\n2022/02/02 또는 20220202처럼 입력해주세요.' : '.'));
         return;
       }
