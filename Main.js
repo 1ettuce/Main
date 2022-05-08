@@ -60,9 +60,9 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   if(msg.startsWith('d.day')){
     var d_day_list = {'수능':'2022/11/17'}
-    if(!Object.keys(d_day_list).includes(msg.slice(5))) return;
-    var d_day = Math.ceil((new Date(d_day_list[msg.slice(5)])-new Date())/86400000);
-    replier.reply(Noti_Room.includes(room) ? Send_Room : room,'['+msg.slice(5)+'] ' + (d_day > 0 ? 'D-'+d_day : d_day == 0 ? 'D-Day' : 'D+'+Math.abs(d_day)))
+    if(!Object.keys(d_day_list).includes(msg.slice(5).trim())) return;
+    var d_day = Math.ceil((new Date(d_day_list[msg.slice(5).trim()])-new Date())/86400000);
+    replier.reply(Noti_Room.includes(room) ? Send_Room : room,'['+msg.slice(5).trim()+'] ' + (d_day > 0 ? 'D-'+d_day : d_day == 0 ? 'D-Day' : 'D+'+Math.abs(d_day)))
   }
 
 
