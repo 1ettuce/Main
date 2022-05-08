@@ -14,7 +14,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   room = room.trim();
   sender = sender.trim().replace("~#~", "");
   var Certified = ['이상수'].includes(sender);
-  var Meal_Noti_Room = '건전한 아이들';
+  var Send_Room = '건전한 아이들';
   var Noti_Room = ['Noti_Room']
 
 
@@ -62,7 +62,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     var d_day_list = {'수능':'2022/11/17'}
     if(!Object.keys(d_day_list).includes(msg.slice(5))) return;
     var d_day = Math.ceil((new Date(d_day_list[msg.slice(5)])-new Date())/86400000);
-    replier.reply('['+msg.slice(5)+'] ' + (d_day > 0 ? 'D-'+d_day : d_day == 0 ? 'D-Day' : 'D+'+Math.abs(d_day)))
+    replier.reply(Noti_Room.includes(room) ? Send_Room : room,'['+msg.slice(5)+'] ' + (d_day > 0 ? 'D-'+d_day : d_day == 0 ? 'D-Day' : 'D+'+Math.abs(d_day)))
   }
 
 
@@ -78,7 +78,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         replier.reply('데이터가 없습니다' + (Meal_Date_Data1 != '' ? '.\n\n날짜를 올바르게 입력하셨나요?\n2022/02/22 또는 202202212처럼 입력해주세요.' : '.'));
         return;
       }
-      replier.reply(Noti_Room.includes(room) ? Meal_Noti_Room : room, Meal_Date.join('/') + '    [' + ['중식', '석식'][msg.startsWith('meal.dinner') ? 1 : 0] + ']\n━━━━━━━━━━\n' + Meal_Data[msg.startsWith('meal.dinner') ? 2 : 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
+      replier.reply(Noti_Room.includes(room) ? Send_Room : room, Meal_Date.join('/') + '    [' + ['중식', '석식'][msg.startsWith('meal.dinner') ? 1 : 0] + ']\n━━━━━━━━━━\n' + Meal_Data[msg.startsWith('meal.dinner') ? 2 : 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
         return '-' + v.replace(/bh|bml|bmj|bm|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
       }).join('\n') + '\n━━━━━━━━━━');
     } catch (e) {
