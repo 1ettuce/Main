@@ -65,7 +65,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       var Meal_Date = [Meal_Date_Data2[0],Date_Format(Meal_Date_Data2[1]),Date_Format(Meal_Date_Data2[2])]
       var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date.join('')).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
       if (Meal_Data[1] == null) {
-        replier.reply('데이터가 없습니다' + (Meal_Date_Data1 != '' ? '.\n날짜를 올바르게 입력하셨나요?\n2022/02/02 또는 20220202처럼 입력해주세요.' : '.'));
+        replier.reply('데이터가 없습니다' + (Meal_Date_Data1 != '' ? '.\n\n날짜를 올바르게 입력하셨나요?\n2022/02/22 또는 202202212처럼 입력해주세요.' : '.'));
         return;
       }
       replier.reply(Noti_Room.includes(room) ? Meal_Noti_Room : room, Meal_Date.join('/') + '    [' + ['중식', '석식'][msg.startsWith('meal.dinner') ? 1 : 0] + ']\n━━━━━━━━━━\n' + Meal_Data[msg.startsWith('meal.dinner') ? 2 : 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
