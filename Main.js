@@ -58,21 +58,26 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   }
 
 
-  if(msg.startsWith('d.day')){
-    var d_day_list = {'수능':'2022/11/17'}
-    if(!Object.keys(d_day_list).includes(msg.slice(5).trim())) return;
-    var d_day = Math.ceil((new Date(d_day_list[msg.slice(5).trim()])-new Date())/86400000);
-    replier.reply(Noti_Room.includes(room) ? Send_Room : room,'['+msg.slice(5).trim()+'] ' + (d_day > 0 ? 'D-'+d_day : d_day == 0 ? 'D-Day' : 'D+'+Math.abs(d_day)))
+  if (msg.startsWith('d.day')) {
+    try {
+      var d_day_list = {
+        '수능': '2022/11/17'
+      }
+      if (!Object.keys(d_day_list).includes(msg.slice(5).trim())) return;
+      var d_day = Math.ceil((new Date(d_day_list[msg.slice(5).trim()]) - new Date()) / 86400000);
+      replier.reply(Noti_Room.includes(room) ? Send_Room : room, '[' + msg.slice(5).trim() + '] ' + (d_day > 0 ? 'D-' + d_day : d_day == 0 ? 'D-Day' : 'D+' + Math.abs(d_day)))
+    } catch (e) {
+      replier.reply('Error: ' + e.message);
+    }
   }
-
 
 
   if (msg.startsWith('meal.')) {
     try {
       var Meal_New_Date = new Date();
       var Meal_Date_Data1 = msg.replace(/meal.|lunch|dinner/g, '').trim();
-      var Meal_Date_Data2 = Meal_Date_Data1.match(/^\d{4}\/\d{1,2}\/\d{1,2}$/g) ? Meal_Date_Data1.split(/\D/g) : Meal_Date_Data1.match(/^\d{6,8}$/g) ? [Meal_Date_Data1.substr(0, 4), Meal_Date_Data1.substr(4, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2), Meal_Date_Data1.substr(Meal_Date_Data1.match(/^\d{6}$/g) ? 5 : 6, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2)] : [Meal_New_Date.getFullYear(), Meal_New_Date.getMonth() + 1 , Meal_New_Date.getDate()];
-      var Meal_Date = [Meal_Date_Data2[0],Date_Format(Meal_Date_Data2[1]),Date_Format(Meal_Date_Data2[2])]
+      var Meal_Date_Data2 = Meal_Date_Data1.match(/^\d{4}\/\d{1,2}\/\d{1,2}$/g) ? Meal_Date_Data1.split(/\D/g) : Meal_Date_Data1.match(/^\d{6,8}$/g) ? [Meal_Date_Data1.substr(0, 4), Meal_Date_Data1.substr(4, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2), Meal_Date_Data1.substr(Meal_Date_Data1.match(/^\d{6}$/g) ? 5 : 6, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2)] : [Meal_New_Date.getFullYear(), Meal_New_Date.getMonth() + 1, Meal_New_Date.getDate()];
+      var Meal_Date = [Meal_Date_Data2[0], Date_Format(Meal_Date_Data2[1]), Date_Format(Meal_Date_Data2[2])]
       var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date.join('')).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
       if (Meal_Data[1] == null) {
         replier.reply('데이터가 없습니다' + (Meal_Date_Data1 != '' ? '.\n\n날짜를 올바르게 입력하셨나요?\n2022/02/22 또는 202202212처럼 입력해주세요.' : '.'));
