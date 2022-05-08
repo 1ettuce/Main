@@ -1,3 +1,4 @@
+const user = '/sdcard/msgbot/data/user/'
 Jsoup = org.jsoup.Jsoup
 
 function url(link) {
@@ -55,6 +56,15 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       replier.reply('오류 : 예상치 못한 오류가 발생했습니다.\n\n다음에 다시 시도해주세요.')
     }
   }
+
+
+  if(msg.startsWith('d.day')){
+    var d_day_list = {'수능':'2022/11/17'}
+    if(!Object.keys(d_day_list).includes(msg.slice(5))) return;
+    var d_day = Math.ceil((new Date(d_day_list[msg.slice(5)])-new Date())/86400000);
+    replier.reply('['+msg.slice(5)+'] ' + (d_day > 0 ? 'D-'+d_day : d_day == 0 ? 'D-Day' : 'D+'+Math.abs(d_day)))
+  }
+
 
 
   if (msg.startsWith('meal.')) {
