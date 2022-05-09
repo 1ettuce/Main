@@ -26,6 +26,25 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3'].concat(Noti_Room).includes(room)) return;
 
+
+  /******************게임******************/
+
+
+if(msg=='=출석'){
+  var Daily_Rewards_List
+}
+
+
+
+
+
+
+
+
+
+
+
+
   if (msg.indexOf("=맞춤법") == 0) {
     var 맞춤법 = Utils.getWebText("https://m.search.naver.com/p/csearch/ocontent/util/SpellerProxy?_callback=jQuery112409480582739631525_1546088820574&q=" + encodeURIComponent(msg.slice(4).trim()) + "&where=nexearch&color_blindness=0&_=1546088820582").split("notag_html\":\"")[1].split("\"")[0];
     replier.reply(msg.slice(4).trim() + "\n⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼⎼\n" + 맞춤법);
@@ -65,7 +84,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       }
       if (!Object.keys(d_day_list).includes(msg.slice(5).trim())) return;
       var d_day = Math.ceil((new Date(d_day_list[msg.slice(5).trim()]) - new Date()) / 86400000);
-      replier.reply(Noti_Room.includes(room) ? Send_Room : room, '[' + msg.slice(5).trim() + ']\n━━━━━━━━━━\n' + (d_day > 0 ? 'D-' + d_day : d_day == 0 ? 'D-Day' : 'D+' + Math.abs(d_day)) +'   ('+ (((365-d_day)/365)*100).toFixed(2) + '% 경과)');
+      replier.reply(Noti_Room.includes(room) ? Send_Room : room, '[' + msg.slice(5).trim() + ']\n━━━━━━━━━━\n' + (d_day > 0 ? 'D-' + d_day : d_day == 0 ? 'D-Day' : 'D+' + Math.abs(d_day)) + '   (' + (((365 - d_day) / 365) * 100).toFixed(2) + '% 경과)');
     } catch (e) {
       replier.reply('Error: ' + e.message);
     }
