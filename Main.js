@@ -69,7 +69,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     }
     User_Date[sender][1]++
     User_Date[sender][0] = Today
-    if(User_Stats[sender][1] < User_Date[sender][1]) User_Stats[sender][1] = User_Date[sender][1]
+    if (User_Stats[sender][1] < User_Date[sender][1]) User_Stats[sender][1] = User_Date[sender][1]
     var Daily_Reward = 10 * ('1.' + (User_Date[sender][1] - 1));
     User_Info[sender][0] += Daily_Reward
     User_Stats[sender][0] += Daily_Reward
