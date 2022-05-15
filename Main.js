@@ -68,11 +68,23 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       User_Date[sender][1] = 0
     }
     User_Date[sender][1]++
+    User_Date[sender][0] = Today
+    if(User_Stats[sender][1] < User_Date[sender][1]) User_Stats[sender][1] = User_Date[sender][1]
     var Daily_Reward = 10 * ('1.' + (User_Date[sender][1] - 1));
-    User_Date[sender][0] += Daily_Reward
+    User_Info[sender][0] += Daily_Reward
+    User_Stats[sender][0] += Daily_Reward
     replier.reply(User_Date[sender][1] > 1 ? User_Date[sender][1] + '일 연속 출석했습니다.\n' : '' + '출석 보상으로 ' + Daily_Reward + '원을 받았습니다.');
   }
 
+  if (msg == '=내업적') {
+    var User_Info = JSON.parse(FileStream.read(user + 'user.json'));
+    var User_Stats = JSON.parse(FileStream.read(user + 'stats.json'));
+    if (!Object.keys(User_Info).includes(sender)) {
+      replier.reply('사용자 정보를 불러오지 못했습니다.\n\'=내정보\'로 정보를 확인해주세요.');
+      return;
+    }
+    replier.reply('출석으로 받은 돈 : ' + User_Stats[sender][0] + '원\n최대 연속 출석 일수' + User_Stats[sender][1] + '일')
+  }
 
 
 
