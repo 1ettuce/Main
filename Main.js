@@ -73,7 +73,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     User_Date[sender][1]++
     User_Date[sender][0] = Today
     if (User_Stats[sender][1] < User_Date[sender][1]) User_Stats[sender][1] = User_Date[sender][1]
-    var Daily_Reward = 10 * ('1.' + (User_Date[sender][1] - 1));
+    var Daily_Reward = 100 * ('1.' + (User_Date[sender][1] - 1));
     User_Info[sender][0] += Daily_Reward
     User_Stats[sender][0] += Daily_Reward
     FileStream.write(user + 'user.json', JSON.stringify(User_Info));
@@ -89,7 +89,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       replier.reply('사용자 정보를 불러오지 못했습니다.\n\'=내정보\'로 정보를 확인해주세요.');
       return;
     }
-    replier.reply('출석으로 받은 돈 : ' + User_Stats[sender][0] + '원\n최대 연속 출석 일수' + User_Stats[sender][1] + '일')
+    replier.reply('출석으로 받은 돈 : ' + User_Stats[sender][0] + '원\n최대 연속 출석 일수 : ' + User_Stats[sender][1] + '일')
   }
 
 
