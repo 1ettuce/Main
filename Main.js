@@ -15,7 +15,14 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   sender = sender.trim().replace("~#~", "");
   var Certified = ['이상수'].includes(sender);
   var Send_Room = '건전한 아이들';
-  var Noti_Room = ['Noti_Room']
+  var Noti_Room = ['Noti_Room'];
+  var File_Count = 3;
+  var File_Check = java.io.File(user).list().length == File_Count;
+  var User_Format = [
+    [0],
+    [new Date('2022/02/02'), 0],
+    [0, 0, 0, 0]
+  ]
 
 
   /******************절취선******************/
@@ -30,10 +37,41 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   /******************게임******************/
 
 
-if(msg=='=출석'){
-  var Daily_Rewards_List = JSON.parse(FileStream.read(user+'date.json'));
-  if(Object.keys(Daily_Rewards_List).includes(sender)) return;
-}
+  if (msg == '=내정보') {
+    var User_Info = JSON.parse(FileStream.read(user + 'user.json'));
+    var User_Date = JSON.parse(FileStream.read(user + 'date.json'));
+    var User_Stats = JSON.parse(FileStream.read(user + 'stats.json'));
+    if (!Object.keys(User_Info).includes(sender)) {
+      User_Info[sender] = User_Format[0]
+      User_Date[sender] = User_Format[1]
+      User_Stats[sender] = User_Format[2]
+      replier.reply('정보를 새로 생성했습니다.')
+    }
+    replier.reply(sender + '\n━━━━━━━━━━\n' + User_Info[sender][0] + '₩')
+  }
+
+
+  if (msg == '=출석') {
+    var User_Info = JSON.parse(FileStream.read(user + 'user.json'));
+    var User_Date = JSON.parse(FileStream.read(user + 'date.json'));
+    var User_Stats = JSON.parse(FileStream.read(user + 'stats.json'));
+    var Today = new Date(new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate())
+    if (!Object.keys(User_Info).includes(sender)) {
+      replier.reply('사용자 정보를 불러오지 못했습니다.\n\'=내정보\'로 정보를 확인해주세요.');
+      return;
+    }
+    if (new Date(User_Date[sender][0]).getDate() == Today.getDate()) {
+      replier.reply('오늘은 이미 출석 보상을 받았습니다.\n내일 다시 시도해주세요.');
+      return;
+    }
+    if (Today - new Date(User_Date[sender][0]) > 86400000) {
+      User_Date[sender][1] = 0
+    }
+    User_Date[sender][1]++
+    var Daily_Reward = 10 * ('1.' + (User_Date[sender][1] - 1));
+    User_Date[sender][0] += Daily_Reward
+    replier.reply(User_Date[sender][1] > 1 ? User_Date[sender][1] + '일 연속 출석했습니다.\n' : '' + '출석 보상으로 ' + Daily_Reward + '원을 받았습니다.');
+  }
 
 
 
@@ -238,6 +276,7 @@ if(msg=='=출석'){
   function Date_Format(Date) {
     return ('0' + Date).slice(-2);
   }
+
 
   /******************함수******************/
 
