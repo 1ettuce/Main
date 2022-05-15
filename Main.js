@@ -48,6 +48,9 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       replier.reply('정보를 새로 생성했습니다.')
     }
     replier.reply(sender + '\n━━━━━━━━━━\n' + User_Info[sender][0] + '₩')
+    FileStream.write(user+'user.json', JSON.stringify(User_Info));
+    FileStream.write(user+'date.json', JSON.stringify(User_Date));
+    FileStream.write(user+'stats.json', JSON.stringify(User_Stats));
   }
 
 
@@ -73,6 +76,9 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     var Daily_Reward = 10 * ('1.' + (User_Date[sender][1] - 1));
     User_Info[sender][0] += Daily_Reward
     User_Stats[sender][0] += Daily_Reward
+    FileStream.write(user+'user.json', JSON.stringify(User_Info));
+    FileStream.write(user+'date.json', JSON.stringify(User_Date));
+    FileStream.write(user+'stats.json', JSON.stringify(User_Stats));
     replier.reply(User_Date[sender][1] > 1 ? User_Date[sender][1] + '일 연속 출석했습니다.\n' : '' + '출석 보상으로 ' + Daily_Reward + '원을 받았습니다.');
   }
 
