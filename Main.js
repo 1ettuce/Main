@@ -169,7 +169,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   }
 
 
-  if (msg == '=기포') {}
+  if (msg == '=기포') {
+    var Connect_Commits = Jsoup.connect('https://github.com/1ettuce/Main/commits/main/Main.js').get()
+    var Commits_Date = new Date(Connect_Commits.select('#repo-content-pjax-container > div > div.js-navigation-container.js-active-navigation-container.mt-3 > div.TimelineItem.TimelineItem--condensed.pt-0.pb-2 > div.TimelineItem-body > ol > li:nth-child(1) > div.flex-auto.min-width-0.js-details-container.Details > div > div.f6.color-fg-muted.min-width-0 > relative-time').toString().slice(25).split('"')[0])
+    replier.reply('현재 버전 : '+Connect_Commits.select('#repo-content-pjax-container > div > div.js-navigation-container.js-active-navigation-container.mt-3 > div.TimelineItem.TimelineItem--condensed.pt-0.pb-2 > div.TimelineItem-body > ol > li:nth-child(1) > div.flex-auto.min-width-0.js-details-container.Details > p > a').text() +'\n마지막 수정일 : '+(Commits_Date.getFullYear())+'/'+(Commits_Date.getMonth()+1)+'/'+(Commits_Date.getDate()))
+  }
 
 
   if (msg.startsWith("기포")) {
