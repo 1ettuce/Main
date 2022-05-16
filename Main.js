@@ -169,6 +169,9 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   }
 
 
+  if (msg == '=기포') {}
+
+
   if (msg.startsWith("기포")) {
     if (msg.endsWith("야") || msg.endsWith("아") || msg.length == 2) {
       var gipo = ["네, 부르셨나요?", "네, 기포에요.", "무슨 일이신가요?", "네, 기포입니다.", "네, 무엇을 원하시나요?", "네, 말씀해주세요.", "김형근 병신"];
