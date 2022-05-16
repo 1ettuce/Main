@@ -18,6 +18,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   var Noti_Room = ['Noti_Room'];
   var File_Count = 3;
   var File_Check = java.io.File(user).list().length == File_Count;
+  var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
   var User_Format = [
     [0],
     [new Date('2022/02/02'), 0],
@@ -60,11 +61,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     var User_Stats = JSON.parse(FileStream.read(user + 'stats.json'));
     var Today = new Date(new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate())
     if (!Object.keys(User_Info).includes(sender)) {
-      replier.reply('사용자 정보를 불러오지 못했습니다.\n\'=내정보\'로 정보를 확인해주세요.');
+      replier.reply(User_Refusal);
       return;
     }
     if (new Date(User_Date[sender][0]).getDate() == Today.getDate()) {
-      replier.reply('오늘은 이미 출석 보상을 받았습니다.\n내일 다시 시도해주세요.');
+      replier.reply('이미 출석 보상을 받았습니다.\n내일 다시 시도해주세요.');
       return;
     }
     if (Today - new Date(User_Date[sender][0]) > 86400000) {
@@ -73,20 +74,20 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     User_Date[sender][1]++
     User_Date[sender][0] = Today
     if (User_Stats[sender][1] < User_Date[sender][1]) User_Stats[sender][1] = User_Date[sender][1]
-    var Daily_Reward = 100 * ('1.' + (User_Date[sender][1] - 1));
+    var Daily_Reward = 100 * User_Date[sender][1];
     User_Info[sender][0] += Daily_Reward
     User_Stats[sender][0] += Daily_Reward
     FileStream.write(user + 'user.json', JSON.stringify(User_Info));
     FileStream.write(user + 'date.json', JSON.stringify(User_Date));
     FileStream.write(user + 'stats.json', JSON.stringify(User_Stats));
-    replier.reply(User_Date[sender][1] > 1 ? User_Date[sender][1] + '일 연속 출석했습니다.\n' : '' + '출석 보상으로 ' + Daily_Reward + '원을 받았습니다.');
+    replier.reply((User_Date[sender][1] > 1 ? User_Date[sender][1] + '일 연속 출석했습니다.\n' : '') + '출석 보상으로 ' + Daily_Reward + '원을 받았습니다.');
   }
 
   if (msg == '=내업적') {
     var User_Info = JSON.parse(FileStream.read(user + 'user.json'));
     var User_Stats = JSON.parse(FileStream.read(user + 'stats.json'));
     if (!Object.keys(User_Info).includes(sender)) {
-      replier.reply('사용자 정보를 불러오지 못했습니다.\n\'=내정보\'로 정보를 확인해주세요.');
+      replier.reply(User_Refusal);
       return;
     }
     replier.reply('출석으로 받은 돈 : ' + User_Stats[sender][0] + '원\n최대 연속 출석 일수 : ' + User_Stats[sender][1] + '일')
