@@ -74,7 +74,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     User_Date[sender][1]++
     User_Date[sender][0] = Today
     if (User_Stats[sender][1] < User_Date[sender][1]) User_Stats[sender][1] = User_Date[sender][1]
-    var Daily_Reward = 100 * ((0.5*User_Date[sender][1])+0.5)
+    var Daily_Reward = 1000 * ((0.5*User_Date[sender][1])+0.5)
     User_Info[sender][0] += Daily_Reward
     User_Stats[sender][0] += Daily_Reward
     FileStream.write(user + 'user.json', JSON.stringify(User_Info));
