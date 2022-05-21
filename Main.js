@@ -14,16 +14,27 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   room = room.trim();
   sender = sender.trim().replace("~#~", "");
   var Certified = ['이상수'].includes(sender);
+  var Command_List = [{
+    '=기포': '기포의 최신빌드 버전과 현재 적용된 버전을 알려줍니다.',
+    '=계산': '간단한 계산을 실행합니다.',
+    '=로마자': '입력한 글을 로마자로 변환합니다.',
+    '=룰렛': '입력한 항목들중 하나를 무작위로 뽑습니다.',
+    '=맞춤법': '입력한 글을 한글 맞춤법에 따라 교정합니다.',
+    '=이름': '입력한 이름을 사용하는 사람이 몇 명인지 조회합니다.',
+    '=BMI': '키와 몸무게에 따른 BMI 지수를 계산합니다.'
+  }, {
+    '=내정보': '플레이어의 정보를 표시합니다.',
+    '=통계': '플레이어의 통계 정보를 표시합니다.',
+    '=출석': '매일 기본 1,000원을 지급합니다.'
+  }];
   var Send_Room = '건전한 아이들';
   var Noti_Room = ['Noti_Room'];
-  var File_Count = 3;
-  var File_Check = java.io.File(user).list().length == File_Count;
   var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
   var User_Format = [
     [0],
     [new Date('2022/02/02'), 0],
     [0, 0, 0, 0]
-  ]
+  ];
 
 
   /******************절취선******************/
@@ -57,6 +68,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   if (msg == '=출석') {
     var User_Info = JSON.parse(FileStream.read(user + 'user.json'));
+    3
     var User_Date = JSON.parse(FileStream.read(user + 'date.json'));
     var User_Stats = JSON.parse(FileStream.read(user + 'stats.json'));
     var Today = new Date(new Date().getFullYear() + '/' + (new Date().getMonth() + 1) + '/' + new Date().getDate())
@@ -74,7 +86,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     User_Date[sender][1]++
     User_Date[sender][0] = Today
     if (User_Stats[sender][1] < User_Date[sender][1]) User_Stats[sender][1] = User_Date[sender][1]
-    var Daily_Reward = 1000 * ((0.5*User_Date[sender][1])+0.5)
+    var Daily_Reward = 1000 * ((0.5 * User_Date[sender][1]) + 0.5)
     User_Info[sender][0] += Daily_Reward
     User_Stats[sender][0] += Daily_Reward
     FileStream.write(user + 'user.json', JSON.stringify(User_Info));
@@ -83,7 +95,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     replier.reply((User_Date[sender][1] > 1 ? User_Date[sender][1] + '일 연속 출석했습니다.\n' : '') + '출석 보상으로 ' + Daily_Reward + '원을 받았습니다.');
   }
 
-  if (msg == '=내업적') {
+  if (msg == '=통계') {
     var User_Info = JSON.parse(FileStream.read(user + 'user.json'));
     var User_Stats = JSON.parse(FileStream.read(user + 'stats.json'));
     if (!Object.keys(User_Info).includes(sender)) {
@@ -101,7 +113,9 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
 
 
-
+  if (msg.startsWith('=명령어')) {
+    replier.reply('미완성')
+  }
 
   if (msg.indexOf("=맞춤법") == 0) {
     var 맞춤법 = Utils.getWebText("https://m.search.naver.com/p/csearch/ocontent/util/SpellerProxy?_callback=jQuery112409480582739631525_1546088820574&q=" + encodeURIComponent(msg.slice(4).trim()) + "&where=nexearch&color_blindness=0&_=1546088820582").split("notag_html\":\"")[1].split("\"")[0];
@@ -110,7 +124,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
 
   if (msg.startsWith("=룰렛")) {
-    replier.reply(msg.slice(3).split(",")[Math.floor(Math.random() * msg.slice(3).split(",").length)].trim());
+    replier.reply(msg.slice(3).split(",").length > 1 ? msg.slice(3).split(",")[Math.floor(Math.random() * msg.slice(3).split(",").length)].trim() : '항목이 하나입니다.\n항목을 ,(쉼표)로 구분하여 입력해주세요.');
   }
 
 
@@ -238,21 +252,12 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
 
   if (msg.startsWith('=계산')) {
-    var calculated = JSON.parse(Jsoup.connect('https://m.search.naver.com/p/csearch/content/qapirender.nhn?_callback=window.__jindo2_callback._calculate_0&where=nexearch&pkid=69&q=' + encodeURIComponent(msg.slice(3).trim()) + '&p9=0').ignoreContentType(true).execute().body().match(/\((.*?)\)/)[1])['result']
+    var calculated = JSON.parse(Jsoup.connect('https://m.search.naver.com/p/csearch/content/qapirender.nhn?pkid=69&where=nexearch&p9=0&q=' + encodeURIComponent(msg.slice(3).trim())).ignoreContentType(true).execute().body())['result']
     replier.reply(calculated['status'] == 'success' ? calculated['value'] : '계산 실패')
   }
 
 
-  if (msg.startsWith("=국밥계산")) {
-    if (isNaN(msg.slice(5).trim())) {
-      replier.reply("숫자를 입력해주세요.");
-      return;
-    }
-    replier.reply(((parseInt(msg.slice(5).trim()) / 5600).toFixed(1) + "국밥").replace(".0", ""));
-  }
-
-
-  if (msg.toLowerCase().startsWith('=BMI'.toLowerCase())) {
+  if (msg.toUpperCase().startsWith('=BMI')) {
     var Pre_BMI = msg.slice(4).trim();
     if (isNaN(Pre_BMI.replace(/ /g, ""))) {
       replier.reply(Pre_BMI + Pre_BMI.Particle(['은', '는']) + ' 잘못된 입력입니다.');
