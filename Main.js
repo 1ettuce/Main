@@ -115,7 +115,10 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
 
   if (msg.startsWith('=명령어')) {
-    replier.reply('미완성')
+    var Command_Page = msg.slice(4).trim()
+    replier.reply(Object.keys(Command_List[Command_Page - 1]).map((v, i) => {
+      return Object.keys(Command_List[Command_Page - 1])[i] + ' - ' + Command_List[Command_Page - 1][Object.keys(Command_List[Command_Page - 1])[i]]
+    }).join('\n\n') + '\n\n[' + Command_Page + '/2]')
   }
 
   if (msg.indexOf("=맞춤법") == 0) {
