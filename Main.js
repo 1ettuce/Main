@@ -115,7 +115,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
 
   if (msg.startsWith('=명령어')) {
-    var Command_Page = msg.slice(4).trim()
+    var Command_Page = msg.slice(4).trim() == '' ? '1' : Command_List[msg.slice(4).trim() - 1] == null ? 'return' : msg.slice(4).trim();
+    if (Command_Page == 'return') {
+      replier.reply(msg.slice(4).trim() + (msg.slice(4).trim().Particle(['은', '는']) + ' 잘못된 입력입니다'))
+      return;
+    }
     replier.reply(Object.keys(Command_List[Command_Page - 1]).map((v, i) => {
       return Object.keys(Command_List[Command_Page - 1])[i] + ' - ' + Command_List[Command_Page - 1][Object.keys(Command_List[Command_Page - 1])[i]]
     }).join('\n\n') + '\n\n[' + Command_Page + '/2]')
