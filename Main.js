@@ -1,13 +1,26 @@
 const general = '/sdcard/msgbot/data/general/'
 const user = '/sdcard/msgbot/data/user/'
 Jsoup = org.jsoup.Jsoup
+const NbtoKr = {
+  '1': '일',
+  '2': '이',
+  '3': '삼',
+  '4': '사',
+  '5': '오',
+  '6': '육',
+  '7': '칠',
+  '8': '팔',
+  '9': '구',
+  '0': '영'
+}
 
 function url(link) {
   return encodeURIComponent(link);
 }
 
 String.prototype.Particle = function (Array) {
-  return this.slice(-1).normalize('NFKD')[2] ? Array[0] : Array[1];
+  var PartStr = Object.keys(NbtoKr).includes(this.slice(-1)) ? NbtoKr[this.slice(-1)] : this.slice(-1)
+  return PartStr.slice(-1).normalize('NFKD')[2] ? Array[0] : Array[1];
 }
 
 function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName, threadId) {
