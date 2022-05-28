@@ -367,7 +367,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         return;
       }
       replier.reply(Noti_Room.includes(room) ? Send_Room : room, Meal_Date.join('/') + '    [' + ['중식', '석식'][msg.startsWith('meal.dinner') ? 1 : 0] + ']\n━━━━━━━━━━\n' + Meal_Data[msg.startsWith('meal.dinner') ? 2 : 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
-        return '-' + v.replace(/bh|bml|bmj|bm|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
+        return '-' + v.replace(/bh|bml|bmj|bm|mj|ml|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
       }).join('\n') + '\n━━━━━━━━━━');
     } catch (e) {
       replier.reply('Error: ' + e.message);
