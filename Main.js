@@ -205,7 +205,8 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   if (msg.startsWith('악!')) {
     try {
-      var ak = msg.slice(2).trim().replace(/!/g, '').split(' ');
+      var ak1 = msg.slice(2).trim().replace(/^!*/g, '').trim().split(' ');
+      var ak2 = ak.pop()
         rand = function (max) {
           return Math.floor(Math.random() * max)
         }
@@ -375,7 +376,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
         return return_text + make_str(end_question[rand(end_question.length)], is_Lul)
       }
-      replier.reply(main(ak[0], ak[1]))
+      replier.reply(main(ak1, ak2))
     } catch (e) {
       replier.reply(e)
     }
