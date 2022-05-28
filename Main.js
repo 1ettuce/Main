@@ -27,12 +27,12 @@ rand = function (max) {
   return Math.floor(Math.random() * max)
 }
 
-get_next_lul = function (str) {
-  return (str.charCodeAt(str.length - 1) - 0xAC00) % 28 == 0
+get_next_lul = function (gnstr) {
+  return (gnstr.charCodeAt(gnstr.length - 1) - 0xAC00) % 28 == 0
 }
 
-make_str = function (str, is_Lul) {
-  start_char = str.slice(0, 1)
+make_str = function (mkstr, is_Lul) {
+  start_char = mkstr.slice(0, 1)
   if (start_char == '을' || start_char == '를')
     if (is_Lul == false)
       start_char = '을'
@@ -48,7 +48,7 @@ make_str = function (str, is_Lul) {
       start_char = '은'
   else
     start_char = '는'
-  return start_char + str.slice(1)
+  return start_char + mkstr.slice(1)
 }
 
 main = function (start_txt, overlap) {
@@ -183,7 +183,7 @@ main = function (start_txt, overlap) {
   while (overlap > 0) {
     if (questions_temp.length == 0)
       questions_temp = questions.slice()
-    const idx = rand(questions_temp.length)
+    var idx = rand(questions_temp.length)
     return_text = return_text + make_str(questions_temp[idx], is_Lul)
     is_Lul = get_next_lul(questions_temp[idx])
     questions_temp.splice(idx, 1)
