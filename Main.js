@@ -377,8 +377,8 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   if (msg.startsWith('악!')) {
     try {
       var ak1 = msg.slice(2).trim().replace(/^!*/g, '').trim().split(' ');
-      var ak2 = ak1.pop()
-      isNaN(ak2) ? ak2 = 1 : ak2 = parseInt(ak2)
+      var ak2 = parseInt(ak1.pop())
+      if (isNaN(ak2) || ak2 < 1) return;
       replier.reply(main(ak1.join(' '), ak2))
     } catch (e) {
       replier.reply(e)
