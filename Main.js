@@ -376,7 +376,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
         return return_text + make_str(end_question[rand(end_question.length)], is_Lul)
       }
-      replier.reply(main(ak1, ak2))
+      replier.reply(main(ak1.join(' '), ak2))
     } catch (e) {
       replier.reply(e)
     }
