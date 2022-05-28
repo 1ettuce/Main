@@ -206,7 +206,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   if (msg.startsWith('악!')) {
     try {
       var ak1 = msg.slice(2).trim().replace(/^!*/g, '').trim().split(' ');
-      var ak2 = ak.pop()
+      var ak2 = ak1.pop()
         rand = function (max) {
           return Math.floor(Math.random() * max)
         }
