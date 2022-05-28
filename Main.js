@@ -207,9 +207,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     try {
       var ak1 = msg.slice(2).trim().replace(/^!*/g, '').trim().split(' ');
       var ak2 = ak1.pop()
-        rand = function (max) {
-          return Math.floor(Math.random() * max)
-        }
+      isNaN(ak2) ? ak2 = 1 : ak2 = parseInt(ak2)
+
+      rand = function (max) {
+        return Math.floor(Math.random() * max)
+      }
 
       get_next_lul = function (str) {
         return (str.charCodeAt(str.length - 1) - 0xAC00) % 28 == 0
