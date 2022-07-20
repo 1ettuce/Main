@@ -231,7 +231,10 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   /******************ADMIN******************/
 
-
+  if (Certified && msg.toLowerCase().startsWith('sender.')) {
+    sender = msg.slice(7).split(';')[0].trim()
+    msg = msg.slice(7).split(';')[1].trim()
+  }
 
 
   /******************게임******************/
