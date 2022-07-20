@@ -216,7 +216,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   var Noti_Room = ['Noti_Room'];
   var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
   var User_Format = [
-    [0,0],
+    [0],
     [new Date('2022/02/02'), 0],
     [0, 0, 0, 0]
   ];
@@ -231,16 +231,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   /******************ADMIN******************/
 
-if(msg.toLowerCase().startsWith('user.')){
-  var Latest_Format = JSON.parse(FileStream.read(user + 'latestformat.json'));
-  var User_Array = [JSON.parse(FileStream.read(user + 'user.json')),JSON.parse(FileStream.read(user + 'date.json')),JSON.parse(FileStream.read(user + 'stats.json'))];
-  Switch(msg.tolowerCase().slice(5)){
-    case 'reload':
-      for(i = 0; i < User_Array.length; i++) {
-        if(User_Format[i].length > Latest_Format[i].length){
-          User_Array[i].concat(User_Format[i].splice(User_Array[i].length - User_Format[i].length));
-      }
-    testarr1.concat(testarr2.splice(testarr1.length - testarr2.length));
+
 
 
   /******************게임******************/
