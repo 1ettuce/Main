@@ -267,7 +267,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         replier.reply('Invalid  command.');
         break;
     }
-  } //유저 데이터 관련 명령어 ] "user.command"
+  } //유저 데이터 명령어 ] "user.command"
 
   /******************게임******************/
 
