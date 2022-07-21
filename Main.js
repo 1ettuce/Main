@@ -259,6 +259,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         if (new Date() - new Date(User_Reset_Confirmation) > 60000) {
           User_Reset_Confirmation = new Date();
           replier.reply('Are you sure? This action cannot be reversed.');
+          break;
         }
         replier.reply('Unable to initialize.');
         break;
