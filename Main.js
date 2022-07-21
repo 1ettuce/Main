@@ -216,7 +216,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   var Noti_Room = ['Noti_Room'];
   var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
   var User_Format = [
-    [0],
+    [0,0],
     [new Date('2022/02/02'), 0],
     [0, 0, 0, 0]
   ];
@@ -237,7 +237,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   if (msg.toLowerCase().startsWith('data.')) {
     var User_Array = [JSON.parse(FileStream.read(user + 'user.json')), JSON.parse(FileStream.read(user + 'date.json')), JSON.parse(FileStream.read(user + 'stats.json'))];
-    switch (msg.tolowerCase().slice(5)) {
+    switch (msg.toLowerCase().slice(5)) {
       case 'update':
         var Changes_Count = 0
         for (fi = 0; fi < User_Array.length; fi++) {
