@@ -226,7 +226,6 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   replier.markAsRead();
 
-
   if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3'].concat(Noti_Room).includes(room)) return;
 
   /******************ADMIN******************/
@@ -234,8 +233,29 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   if (Certified && msg.toLowerCase().startsWith('sender.')) {
     sender = msg.slice(7).split(';')[0].trim()
     msg = msg.slice(7).split(';')[1].trim()
-  }
+  } //sender 임의 변경 ] "sender.name; msg"
 
+  if (msg.toLowerCase().startsWith('data.')) {
+    var User_Array = [JSON.parse(FileStream.read(user + 'user.json')), JSON.parse(FileStream.read(user + 'date.json')), JSON.parse(FileStream.read(user + 'stats.json'))];
+    switch (msg.tolowerCase().slice(5)) {
+      case 'update':
+        var Changes_Count = 0
+        for (fi = 0; fi < User_Array.length; fi++) {
+          if (User_Format[fi].length > User_Array[fi]['Latest_Format'].length) {
+            for (si = 0; si < Object.keys(User_Array[fi]).length; si++) {
+              User_Array[fi][Object.keys(User_Array[fi])[si]].push(User_Format[fi].splice(User_Array[fi]['Latest_Format'].length - User_Format[fi].length));
+              Changes_Count += User_Format[fi].length - User_Array[fi]['Latest_Format'].length;
+            }
+            FileStream.write(user + ['user', 'date', 'stats'][fi] + '.json', JSON.stringify(User_Array[fi]));
+          }
+        }
+        replier.reply(Changes_Count + '개의 변경 사항을 저장했습니다.')
+        break;
+      default:
+        replier.reply('잘못된 명령어입니다.');
+        break;
+    }
+  }
 
   /******************게임******************/
 
