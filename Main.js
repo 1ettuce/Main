@@ -243,8 +243,8 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         for (fi = 0; fi < User_Array.length; fi++) {
           if (User_Format[fi].length > User_Array[fi]['Latest_Format'].length) {
             for (si = 0; si < Object.keys(User_Array[fi]).length; si++) {
-              User_Array[fi][Object.keys(User_Array[fi])[si]].push(User_Format[fi].splice(User_Array[fi]['Latest_Format'].length - User_Format[fi].length));
-              Changes_Count += User_Format[fi].length - User_Array[fi]['Latest_Format'].length;
+              Array.prototype.push.apply(User_Array[fi][Object.keys(User_Array[fi])[si]],User_Format[fi].splice(User_Array[fi]['Latest_Format'].length - User_Format[fi].length));
+              Changes_Count += (User_Format[fi].length - User_Array[fi]['Latest_Format'].length);
             }
             FileStream.write(user + ['user', 'date', 'stats'][fi] + '.json', JSON.stringify(User_Array[fi]));
           }
