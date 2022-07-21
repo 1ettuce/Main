@@ -216,7 +216,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   var Noti_Room = ['Noti_Room'];
   var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
   var User_Format = [
-    [0,0],
+    [0, 0],
     [new Date('2022/02/02'), 0],
     [0, 0, 0, 0]
   ];
@@ -237,22 +237,28 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   if (msg.toLowerCase().startsWith('data.')) {
     var User_Array = [JSON.parse(FileStream.read(user + 'user.json')), JSON.parse(FileStream.read(user + 'date.json')), JSON.parse(FileStream.read(user + 'stats.json'))];
+    var User_Latest_Format = JSON.parse(FileStream.read(general + 'User_Latest_Format.json'))
     switch (msg.toLowerCase().slice(5)) {
       case 'update':
         var Changes_Count = []
         for (fi = 0; fi < User_Array.length; fi++) {
-          if (User_Format[fi].length > User_Array[fi]['Latest_Format'].length) {
+          if (User_Format[fi].length > User_Latest_Format[fi].length) {
             for (si = 0; si < Object.keys(User_Array[fi]).length; si++) {
-              Array.prototype.push.apply(User_Array[fi][Object.keys(User_Array[fi])[si]],User_Format[fi].splice(User_Array[fi]['Latest_Format'].length - User_Format[fi].length));
-              Changes_Count.push(User_Format[fi].length - User_Array[fi]['Latest_Format'].length);
+              Array.prototype.push.apply(User_Array[fi][Object.keys(User_Array[fi])[si]], User_Format[fi].splice(User_Latest_Format[fi].length - User_Format[fi].length));
+              Changes_Count.push(User_Format[fi].length - User_Latest_Format[fi].length);
             }
             FileStream.write(user + ['user', 'date', 'stats'][fi] + '.json', JSON.stringify(User_Array[fi]));
           }
         }
-        replier.reply(Changes_Count.join() + '개의 변경 사항을 저장했습니다.')
+        if (Changes_Count.length > 0) {
+          FileStream.write(general + 'User_Latest_Format.json', JSON.stringify(User_Format));
+          replier.reply('Saved ' + Changes_Count.join() + ' changes.');
+        } else {
+          replier.reply('No changes.');
+        }
         break;
       default:
-        replier.reply('잘못된 명령어입니다.');
+        replier.reply('Invalid command.');
         break;
     }
   }
