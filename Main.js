@@ -237,6 +237,9 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     var User_Array = [JSON.parse(FileStream.read(user + 'user.json')), JSON.parse(FileStream.read(user + 'date.json')), JSON.parse(FileStream.read(user + 'stats.json'))];
     var User_Latest_Format = JSON.parse(FileStream.read(general + 'User_Latest_Format.json'));
     switch (true) {
+      case ['command', 'commands'].includes(msg.toLowerCase().slice(5)):
+        replier.reply(['command', 'reload', 'reset'].join('\n'));
+        break;
       case ['reload', 'update'].includes(msg.toLowerCase().slice(5)):
         var Changes_Count = []
         for (fi = 0; fi < User_Array.length; fi++) {
@@ -250,21 +253,21 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         }
         if (Changes_Count.length > 0) {
           FileStream.write(general + 'User_Latest_Format.json', JSON.stringify(User_Format));
-          replier.reply('Saved  ' + Changes_Count.join() + '  changes.');
+          replier.reply('Saved ' + Changes_Count.join() + ' changes.');
         } else {
-          replier.reply('No  changes.');
+          replier.reply('No changes.');
         }
         break;
       case ['reset', 'initialize', 'format'].includes((msg.toLowerCase().slice(5))):
         if (new Date() - new Date(User_Reset_Confirmation) > 60000) {
           User_Reset_Confirmation = new Date();
-          replier.reply('Are  you  sure?  This  action  cannot  be  reversed.');
+          replier.reply('Are you sure?  This action cannot be reversed.');
           break;
         }
-        replier.reply('Unable  to  initialize.');
+        replier.reply('Unable to initialize.');
         break;
       default:
-        replier.reply('Invalid  command.');
+        replier.reply('Invalid command.');
         break;
     }
   } //유저 데이터 명령어 ] "user.command"
