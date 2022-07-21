@@ -215,14 +215,12 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   var Send_Room = '건전한 아이들';
   var Noti_Room = ['Noti_Room'];
   var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
+  var User_Reset_Confirmation = 0
   var User_Format = [
     [0, 0],
     [new Date('2022/02/02'), 0],
     [0, 0, 0, 0]
   ];
-
-
-  /******************절취선******************/
 
   replier.markAsRead();
 
@@ -235,11 +233,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     msg = msg.slice(7).split(';')[1].trim()
   } //sender 임의 변경 ] "sender.name; msg"
 
-  if (msg.toLowerCase().startsWith('data.')) {
+  if (msg.toLowerCase().startsWith('user.')) {
     var User_Array = [JSON.parse(FileStream.read(user + 'user.json')), JSON.parse(FileStream.read(user + 'date.json')), JSON.parse(FileStream.read(user + 'stats.json'))];
-    var User_Latest_Format = JSON.parse(FileStream.read(general + 'User_Latest_Format.json'))
-    switch (msg.toLowerCase().slice(5)) {
-      case 'update':
+    var User_Latest_Format = JSON.parse(FileStream.read(general + 'User_Latest_Format.json'));
+    switch (true) {
+      case ['reload', 'update'].includes(msg.toLowerCase().slice(5)):
         var Changes_Count = []
         for (fi = 0; fi < User_Array.length; fi++) {
           if (User_Format[fi].length > User_Latest_Format[fi].length) {
@@ -256,6 +254,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         } else {
           replier.reply('No changes.');
         }
+        break;
+      case ['reset', 'initialize', 'format'].includes((msg.toLowerCase().slice(5))):
+        if (new Date() - new Date(User_Reset_Confirmation) > 60000) {
+          User_Reset_Confirmation = new Date();
+          replier.reply('Are you sure? This action cannot be reversed.');
+        }
+        replier.reply('Unable to initialize.');
         break;
       default:
         replier.reply('Invalid command.');
