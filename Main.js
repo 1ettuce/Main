@@ -193,6 +193,15 @@ main = function (start_txt, overlap) {
   return return_text + make_str(end_question[rand(end_question.length)], is_Lul)
 }
 
+var User_Reset_Confirmation = 0;
+var Send_Room = '건전한 아이들';
+var Noti_Room = ['Noti_Room'];
+var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
+var User_Format = [
+  [0, 0],
+  [new Date('2022/02/02'), 0],
+  [0, 0, 0, 0]
+];
 
 function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName, threadId) {
   msg = msg.trim();
@@ -212,15 +221,6 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     '=통계': '플레이어의 통계 정보를 표시합니다.',
     '=출석': '매일 기본 1,000원을 지급합니다.'
   }];
-  var Send_Room = '건전한 아이들';
-  var Noti_Room = ['Noti_Room'];
-  var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
-  var User_Reset_Confirmation = 0
-  var User_Format = [
-    [0, 0],
-    [new Date('2022/02/02'), 0],
-    [0, 0, 0, 0]
-  ];
 
   replier.markAsRead();
 
