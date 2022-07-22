@@ -193,7 +193,7 @@ main = function (start_txt, overlap) {
   return return_text + make_str(end_question[rand(end_question.length)], is_Lul)
 }
 
-var User_Reset_Confirmation = 0;
+var User_Initialize_Confirmation = 0;
 var Send_Room = '건전한 아이들';
 var Noti_Room = ['Noti_Room'];
 var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
@@ -258,12 +258,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
           replier.reply('No changes.');
         }
         break;
-      case ['reset', 'initialize', 'format'].includes((msg.toLowerCase().slice(5))):
-        if (new Date() - new Date(User_Reset_Confirmation) > 60000) {
-          User_Reset_Confirmation = new Date();
+      case ['initialize', 'reset', 'format'].includes((msg.toLowerCase().slice(5))):
+        if (new Date() - new Date(User_Initialize_Confirmation) > 60000) {
+          User_Initialize_Confirmation = new Date();
           replier.reply('Are you sure?  This action cannot be reversed.');
           break;
         }
+        User_Initialize_Confirmation = 0;
         replier.reply('Unable to initialize.');
         break;
       default:
