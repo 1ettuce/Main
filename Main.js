@@ -249,11 +249,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
               Changes_Check.push(User_Array[fi][Object.keys(User_Array[fi])[si]], User_Format[fi].splice(User_Latest_Format[fi].length - User_Format[fi].length));
               Changes_Count.push(User_Format[fi].length - User_Latest_Format[fi].length);
             }
-            FileStream.write(user + ['user', 'date', 'stats'][fi] + '.json', JSON.stringify(User_Array[fi]));
+            //FileStream.write(user + ['user', 'date', 'stats'][fi] + '.json', JSON.stringify(User_Array[fi]));
           }
         }
         if (Changes_Count.length > 0) {
-          FileStream.write(general + 'User_Latest_Format.json', JSON.stringify(User_Format));
+          //FileStream.write(general + 'User_Latest_Format.json', JSON.stringify(User_Format));
           replier.reply('Saved ' + Changes_Count.join() + ' changes.\n'+Changes_Check.join());
         } else {
           replier.reply('No changes.');
