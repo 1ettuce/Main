@@ -246,14 +246,14 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
           if (User_Format[fi].length > User_Latest_Format[fi].length) {
             for (si = 0; si < Object.keys(User_Array[fi]).length; si++) {
               Array.prototype.push.apply(User_Array[fi][Object.keys(User_Array[fi])[si]], User_Format[fi].slice(User_Latest_Format[fi].length - User_Format[fi].length));
-              Changes_Count.push(User_Format[fi].length - User_Latest_Format[fi].length);
+              Changes_Count += (User_Format[fi].length - User_Latest_Format[fi].length);
             }
             FileStream.write(user + ['user', 'date', 'stats'][fi] + '.json', JSON.stringify(User_Array[fi]));
           }
         }
-        if (Changes_Count.length > 0) {
+        if (Changes_Count > 0) {
           FileStream.write(general + 'User_Latest_Format.json', JSON.stringify(User_Format));
-          replier.reply('Saved ' + Changes_Count.join() + ' changes.');
+          replier.reply('Saved ' + Changes_Count + ' changes.');
         } else {
           replier.reply('No changes.');
         }
@@ -285,7 +285,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       User_Stats[sender] = User_Format[2]
       replier.reply('정보를 새로 생성했습니다.')
     }
-    replier.reply(sender + '\n━━━━━━━━━━\n' + User_Info[sender][0] + '₩')
+    replier.reply('━ '+ sender + ' ━━━━\n자산 ] ' + User_Info[sender][0] + '₩\n' + User_Info[sender][1] < 0 ? '악명' : '명성' + ' ] '+Math.abs(User_Info[sender][1]))
     FileStream.write(user + 'user.json', JSON.stringify(User_Info));
     FileStream.write(user + 'date.json', JSON.stringify(User_Date));
     FileStream.write(user + 'stats.json', JSON.stringify(User_Stats));
