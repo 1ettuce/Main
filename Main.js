@@ -1,4 +1,4 @@
-//    Version 1.27-alpha5    //
+//    Version 1.27-alpha6    //
 const general = '/sdcard/msgbot/data/general/'
 const user = '/sdcard/msgbot/data/user/'
 Jsoup = org.jsoup.Jsoup
@@ -195,7 +195,7 @@ main = function (start_txt, overlap) {
 }
 
 var User_Initialize_Confirmation = 0;
-var Send_Room = '건전한 아이들';
+var Send_Room = ['건전한 아이들', 'Room_1'];
 var Noti_Room = ['Noti_Room'];
 var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
 var User_Format = [
@@ -225,7 +225,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   replier.markAsRead();
 
-  if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3'].concat(Noti_Room).includes(room)) return;
+  if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', 'Room_1', 'Room_2', 'Room_3'].concat(Noti_Room).includes(room)) return;
 
   /******************ADMIN******************/
 
@@ -239,12 +239,13 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   } //sender 임의 변경 ] "sender.name; msg"
 
   if (msg.toLowerCase().startsWith('user.')) {
+    if (!Certified) {
+      replier.reply('You do not have permission to use this command');
+      return;
+    }
     var User_Array = [JSON.parse(FileStream.read(user + 'user.json')), JSON.parse(FileStream.read(user + 'date.json')), JSON.parse(FileStream.read(user + 'stats.json'))];
     var User_Latest_Format = JSON.parse(FileStream.read(general + 'User_Latest_Format.json'));
     switch (true) {
-      case !Certified:
-        replier.reply('You do not have permission to use this command.');
-        break;
       case ['commands', 'command', 'help', '?'].includes(msg.toLowerCase().slice(5).trim()):
         replier.reply(['Commands', 'Reload', 'Data'].join('\n'));
         break;
@@ -289,6 +290,21 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
           break;
     }
   } //유저 데이터 명령어 ] "user.command"
+
+  if (msg.toLowerCase().startsWith('notification.')) {
+    if (!Certified) {
+      replier.reply('You do not have permission to use this command');
+      return;
+    }
+    for (ri = 0; ri < Send_Room.length; ri++) {
+      try {
+        replier.reply(Send_Room[ri], eval(msg.slice(13).trim()));
+      } catch (e) {
+        replier.reply(e.message);
+      }
+    }
+  }
+
 
   /******************게임******************/
 
@@ -535,7 +551,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date.join('')).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
     if (Meal_Data[1] == null)
       return ('데이터가 없습니다' + (Meal_Date_Data1 != '' ? '.\n\n날짜를 올바르게 입력하셨나요?\n2022/02/22 또는 202202212처럼 입력해주세요.' : '.'));
-    return (Meal_Date.join('/') + '    [' + ['중식', '석식'][hour] + ']\n━━━━━━━━━━\n' + Meal_Data[hour++].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
+    return (Meal_Date.join('/') + '    [' + ['중식', '석식'][hour] + ']\n━━━━━━━━━━\n' + Meal_Data[hour + 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
       return '-' + v.replace(/bh|bml|bmj|bm|mj|ml|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
     }).join('\n') + '\n━━━━━━━━━━');
   }
@@ -559,12 +575,14 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
 
   try {
-    if (Certified && msg.indexOf("*") == 0) {
-      replier.reply(room, eval(msg.slice(1)));
-    } else if (!Certified && msg.indexOf("*") == 0) {
-      replier.reply("관리자 권한이 없어요.");
+    if (msg.startsWith('*')) {
+      if (!Certified) {
+        replier.reply('You do not have permission to use this command.');
+        return;
+      }
+      replier.reply(room, eval(msg.slice(1).trim()));
     }
   } catch (e) {
-    replier.reply("오류가 발생했어요\n\n오류 : " + e.name + " " + e.message);
+    replier.reply(e.message);
   }
 }
