@@ -1,4 +1,4 @@
-//    Version 1.27-alpha6    //
+//    Version 1.27-alpha7    //
 const general = '/sdcard/msgbot/data/general/'
 const user = '/sdcard/msgbot/data/user/'
 Jsoup = org.jsoup.Jsoup
@@ -418,10 +418,10 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   if (msg.startsWith('=') && msg.slice(2).startsWith('식')) {
     switch ((msg.slice(1).substr(0, 2))) {
       case '중식':
-        replier.reply(meal(1, msg.slice(3).trim()));
+        replier.reply(meal(1,false, msg.slice(3).trim()));
         break;
       case '석식':
-        replier.reply(meal(2, msg.slice(3).trim()));
+        replier.reply(meal(2,false, msg.slice(3).trim()));
         break;
     }
   }
@@ -543,14 +543,16 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   /******************함수******************/
 
 
-  function meal(hour, date) {
+  function meal(hour, ignore_exception , date) {
+    ignore_exception = (typeof ignore_exception !== 'undefined') ? ignore_exception : false;
+    date = (typeof date !== 'undefined') ?  date : '';
     var Meal_New_Date = new Date();
     var Meal_Date_Data1 = date.trim();
     var Meal_Date_Data2 = Meal_Date_Data1.match(/^\d{4}\D\d{1,2}\D\d{1,2}$/g) ? Meal_Date_Data1.split(/\D/g) : Meal_Date_Data1.match(/^\d{6,8}$/g) ? [Meal_Date_Data1.substr(0, 4), Meal_Date_Data1.substr(4, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2), Meal_Date_Data1.substr(Meal_Date_Data1.match(/^\d{6}$/g) ? 5 : 6, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2)] : [Meal_New_Date.getFullYear(), Meal_New_Date.getMonth() + 1, Meal_New_Date.getDate()];
     var Meal_Date = [Meal_Date_Data2[0], Date_Format(Meal_Date_Data2[1]), Date_Format(Meal_Date_Data2[2])]
     var Meal_Data = Jsoup.connect('https://open.neis.go.kr/hub/mealServiceDietInfo?ATPT_OFCDC_SC_CODE=B10&SD_SCHUL_CODE=7010169&MLSV_YMD=' + Meal_Date.join('')).ignoreHttpErrors(true).get().toString().split('<DDISH_NM>')
     if (Meal_Data[1] == null)
-      return ('데이터가 없습니다' + (Meal_Date_Data1 != '' ? '.\n\n날짜를 올바르게 입력하셨나요?\n2022/02/22 또는 202202212처럼 입력해주세요.' : '.'));
+      return (ignore_exception ? '' : ('데이터가 없습니다' + (Meal_Date_Data1 != '' ? '.\n\n날짜를 올바르게 입력하셨나요?\n2022/02/22 또는 202202212처럼 입력해주세요.' : '.')));
     return (Meal_Date.join('/') + '    [' + ['중식', '석식'][hour] + ']\n━━━━━━━━━━\n' + Meal_Data[hour + 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
       return '-' + v.replace(/bh|bml|bmj|bm|mj|ml|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
     }).join('\n') + '\n━━━━━━━━━━');
