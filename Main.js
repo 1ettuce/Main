@@ -285,7 +285,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       User_Stats[sender] = User_Format[2]
       replier.reply('정보를 새로 생성했습니다.')
     }
-    replier.reply('━ '+ sender + ' ━━━━\n자산 ] ' + User_Info[sender][0] + '₩\n' + User_Info[sender][1] < 0 ? '악명' : '명성' + ' ] '+Math.abs(User_Info[sender][1]))
+    replier.reply('━ '+ sender + ' ━━━━\n자산 ] ' + User_Info[sender][0] + '₩\n' + (User_Info[sender][1] < 0 ? '악명' : '명성') + ' ] '+Math.abs(User_Info[sender][1]))
     FileStream.write(user + 'user.json', JSON.stringify(User_Info));
     FileStream.write(user + 'date.json', JSON.stringify(User_Date));
     FileStream.write(user + 'stats.json', JSON.stringify(User_Stats));
