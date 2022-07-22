@@ -1,3 +1,4 @@
+//    Version 1.27-alpha4    //
 const general = '/sdcard/msgbot/data/general/'
 const user = '/sdcard/msgbot/data/user/'
 Jsoup = org.jsoup.Jsoup
