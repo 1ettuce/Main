@@ -233,14 +233,14 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     msg = msg.slice(7).split(';')[1].trim()
   } //sender 임의 변경 ] "sender.name; msg"
 
-  if (msg.toLowerCase().startsWith('user.')) {
+  if (Certified && msg.toLowerCase().startsWith('user.')) {
     var User_Array = [JSON.parse(FileStream.read(user + 'user.json')), JSON.parse(FileStream.read(user + 'date.json')), JSON.parse(FileStream.read(user + 'stats.json'))];
     var User_Latest_Format = JSON.parse(FileStream.read(general + 'User_Latest_Format.json'));
     switch (true) {
-      case ['command', 'commands'].includes(msg.toLowerCase().slice(5)):
-        replier.reply(['command', 'reload', 'reset'].join('\n'));
+      case ['commands', 'command', 'help', '?'].includes(msg.toLowerCase().slice(5).trim()):
+        replier.reply(['Commands', 'Reload', 'Data'].join('\n'));
         break;
-      case ['reload', 'update'].includes(msg.toLowerCase().slice(5)):
+      case ['reload', 'update'].includes(msg.toLowerCase().slice(5).trim()):
         var Changes_Count = []
         for (fi = 0; fi < User_Array.length; fi++) {
           if (User_Format[fi].length > User_Latest_Format[fi].length) {
@@ -258,18 +258,29 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
           replier.reply('No changes.');
         }
         break;
-      case ['initialize', 'reset', 'format'].includes((msg.toLowerCase().slice(5))):
-        if (new Date() - new Date(User_Initialize_Confirmation) > 60000) {
-          User_Initialize_Confirmation = new Date();
-          replier.reply('Are you sure?  This action cannot be reversed.');
+      case msg.toLowerCase().slice(5).trim().startsWith('data'):
+        var User_Pre_Data = msg.toLowerCase().slice(5).trim().slice(4).trim()
+        if (User_Pre_Data != '' && User_Pre_Data.substr(0, 1) != '.') {
+          replier.reply('Invalid command.');
           break;
         }
-        User_Initialize_Confirmation = 0;
-        replier.reply('Unable to initialize.');
-        break;
-      default:
-        replier.reply('Invalid command.');
-        break;
+        if (['', 'command', 'commands', 'help', '?'].includes(User_Pre_Data)) {
+          replier.reply(['Commands', 'Edit', 'Initialize'].join('\n'))
+          break;
+        }
+        if (['initialize', 'reset', 'format'].includes(User_Pre_Data)) {
+          if (new Date() - new Date(User_Initialize_Confirmation) > 60000) {
+            User_Initialize_Confirmation = new Date();
+            replier.reply('Are you sure?  This action cannot be reversed.');
+            break;
+          }
+          User_Initialize_Confirmation = 0;
+          replier.reply('Unable to initialize.');
+          break;
+        }
+        default:
+          replier.reply('Invalid command.');
+          break;
     }
   } //유저 데이터 명령어 ] "user.command"
 
@@ -285,7 +296,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
       User_Stats[sender] = User_Format[2]
       replier.reply('정보를 새로 생성했습니다.')
     }
-    replier.reply('━ '+ sender + ' ━━━━\n자산 ] ' + User_Info[sender][0] + '₩\n' + (User_Info[sender][1] < 0 ? '악명' : '명성') + ' ] '+Math.abs(User_Info[sender][1]))
+    replier.reply('━ ' + sender + ' ━━━━\n자산 ] ' + User_Info[sender][0] + '₩\n' + (User_Info[sender][1] < 0 ? '악명' : '명성') + ' ] ' + Math.abs(User_Info[sender][1]) + '/100')
     FileStream.write(user + 'user.json', JSON.stringify(User_Info));
     FileStream.write(user + 'date.json', JSON.stringify(User_Date));
     FileStream.write(user + 'stats.json', JSON.stringify(User_Stats));
