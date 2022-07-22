@@ -267,10 +267,8 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         break;
       case msg.toLowerCase().slice(5).trim().startsWith('data'):
         var User_Pre_Data = msg.toLowerCase().slice(5).trim().slice(4).trim()
-        if (User_Pre_Data != '' && User_Pre_Data.substr(0, 1) != '.') {
-          replier.reply('Invalid command.');
-          break;
-        }
+        if (User_Pre_Data != '' && User_Pre_Data.substr(0, 1) == '.')
+          User_Pre_Data = User_Pre_Data.slice(1).trim();
         if (['', 'command', 'commands', 'help', '?'].includes(User_Pre_Data)) {
           replier.reply(['Commands', 'Edit', 'Initialize'].join('\n'))
           break;
