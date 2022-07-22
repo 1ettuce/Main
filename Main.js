@@ -228,15 +228,22 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
 
   /******************ADMIN******************/
 
-  if (Certified && msg.toLowerCase().startsWith('sender.')) {
+  if (msg.toLowerCase().startsWith('sender.')) {
+    if (!Certified) {
+      replier.reply('You do not have permission to use this command');
+      return;
+    }
     sender = msg.slice(7).split(';')[0].trim()
     msg = msg.slice(7).split(';')[1].trim()
   } //sender 임의 변경 ] "sender.name; msg"
 
-  if (Certified && msg.toLowerCase().startsWith('user.')) {
+  if (msg.toLowerCase().startsWith('user.')) {
     var User_Array = [JSON.parse(FileStream.read(user + 'user.json')), JSON.parse(FileStream.read(user + 'date.json')), JSON.parse(FileStream.read(user + 'stats.json'))];
     var User_Latest_Format = JSON.parse(FileStream.read(general + 'User_Latest_Format.json'));
     switch (true) {
+      case !Certified:
+        replier.reply('You do not have permission to use this command.');
+        break;
       case ['commands', 'command', 'help', '?'].includes(msg.toLowerCase().slice(5).trim()):
         replier.reply(['Commands', 'Reload', 'Data'].join('\n'));
         break;
