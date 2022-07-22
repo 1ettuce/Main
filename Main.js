@@ -242,19 +242,18 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
         break;
       case ['reload', 'update'].includes(msg.toLowerCase().slice(5)):
         var Changes_Count = []
-        var Changes_Check = []
         for (fi = 0; fi < User_Array.length; fi++) {
           if (User_Format[fi].length > User_Latest_Format[fi].length) {
             for (si = 0; si < Object.keys(User_Array[fi]).length; si++) {
-              Changes_Check.push(User_Array[fi][Object.keys(User_Array[fi])[si]], User_Format[fi].splice(User_Latest_Format[fi].length - User_Format[fi].length));
+              Array.prototype.push.apply(User_Array[fi][Object.keys(User_Array[fi])[si]], User_Format[fi].slice(User_Latest_Format[fi].length - User_Format[fi].length));
               Changes_Count.push(User_Format[fi].length - User_Latest_Format[fi].length);
             }
-            //FileStream.write(user + ['user', 'date', 'stats'][fi] + '.json', JSON.stringify(User_Array[fi]));
+            FileStream.write(user + ['user', 'date', 'stats'][fi] + '.json', JSON.stringify(User_Array[fi]));
           }
         }
         if (Changes_Count.length > 0) {
-          //FileStream.write(general + 'User_Latest_Format.json', JSON.stringify(User_Format));
-          replier.reply('Saved ' + Changes_Count.join() + ' changes.\n'+Changes_Check.join());
+          FileStream.write(general + 'User_Latest_Format.json', JSON.stringify(User_Format));
+          replier.reply('Saved ' + Changes_Count.join() + ' changes.');
         } else {
           replier.reply('No changes.');
         }
