@@ -1,4 +1,4 @@
-//    Version 1.27-alpha7    //
+//    Version 1.27-alpha8    //
 const general = '/sdcard/msgbot/data/general/'
 const user = '/sdcard/msgbot/data/user/'
 Jsoup = org.jsoup.Jsoup
@@ -194,6 +194,23 @@ main = function (start_txt, overlap) {
   return return_text + make_str(end_question[rand(end_question.length)], is_Lul)
 }
 
+var d_day_list = {
+  '2023 대학수학능력시험': '2022/11/17'
+};
+var Command_List = [{
+  '=기포': '기포의 최신빌드 버전과 현재 적용된 버전을 알려줍니다.',
+  '=계산': '간단한 계산을 실행합니다.',
+  '=로마자': '입력한 글을 로마자로 변환합니다.',
+  '=룰렛': '입력한 항목들중 하나를 무작위로 뽑습니다.',
+  '=맞춤법': '입력한 글을 한글 맞춤법에 따라 교정합니다.',
+  '=이름': '입력한 이름을 사용하는 사람이 몇 명인지 조회합니다.',
+  '=BMI': '키와 몸무게에 따른 BMI 지수를 계산합니다.'
+}, {
+  '=내정보': '플레이어의 정보를 표시합니다.',
+  '=통계': '플레이어의 통계 정보를 표시합니다.',
+  '=출석': '매일 기본 1,000원을 지급합니다.'
+}];
+
 var User_Initialize_Confirmation = 0;
 var Send_Room = ['건전한 아이들', 'Room_1'];
 var Noti_Room = ['Noti_Room'];
@@ -209,22 +226,8 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   room = room.trim();
   sender = sender.trim().replace("~#~", "");
   var Certified = ['이상수'].includes(sender);
-  var Command_List = [{
-    '=기포': '기포의 최신빌드 버전과 현재 적용된 버전을 알려줍니다.',
-    '=계산': '간단한 계산을 실행합니다.',
-    '=로마자': '입력한 글을 로마자로 변환합니다.',
-    '=룰렛': '입력한 항목들중 하나를 무작위로 뽑습니다.',
-    '=맞춤법': '입력한 글을 한글 맞춤법에 따라 교정합니다.',
-    '=이름': '입력한 이름을 사용하는 사람이 몇 명인지 조회합니다.',
-    '=BMI': '키와 몸무게에 따른 BMI 지수를 계산합니다.'
-  }, {
-    '=내정보': '플레이어의 정보를 표시합니다.',
-    '=통계': '플레이어의 통계 정보를 표시합니다.',
-    '=출석': '매일 기본 1,000원을 지급합니다.'
-  }];
 
   replier.markAsRead();
-
   if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', 'Room_1', 'Room_2', 'Room_3'].concat(Noti_Room).includes(room)) return;
 
   /******************ADMIN******************/
@@ -418,25 +421,11 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   if (msg.startsWith('=') && msg.slice(2).startsWith('식')) {
     switch ((msg.slice(1).substr(0, 2))) {
       case '중식':
-        replier.reply(meal(1,false, msg.slice(3).trim()));
+        replier.reply(meal(0, false, msg.slice(3).trim()));
         break;
       case '석식':
-        replier.reply(meal(2,false, msg.slice(3).trim()));
+        replier.reply(meal(1, false, msg.slice(3).trim()));
         break;
-    }
-  }
-
-
-  if (msg.startsWith('d.day')) {
-    try {
-      var d_day_list = {
-        '2023 대학수학능력시험': '2022/11/17'
-      }
-      if (!Object.keys(d_day_list).includes(msg.slice(5).trim())) return;
-      var d_day = Math.ceil((new Date(d_day_list[msg.slice(5).trim()]) - new Date()) / 86400000);
-      replier.reply(Noti_Room.includes(room) ? Send_Room : room, '[' + msg.slice(5).trim() + ']\n━━━━━━━━━━\n' + (d_day > 0 ? 'D-' + d_day : d_day == 0 ? 'D-Day' : 'D+' + Math.abs(d_day)) + '   (' + (((365 - d_day) / 365) * 100).toFixed(2) + '% 경과)');
-    } catch (e) {
-      replier.reply('Error: ' + e.message);
     }
   }
 
@@ -543,9 +532,9 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   /******************함수******************/
 
 
-  function meal(hour, ignore_exception , date) {
+  function meal(hour, ignore_exception, date) {
     ignore_exception = (typeof ignore_exception !== 'undefined') ? ignore_exception : false;
-    date = (typeof date !== 'undefined') ?  date : '';
+    date = (typeof date !== 'undefined') ? date : '';
     var Meal_New_Date = new Date();
     var Meal_Date_Data1 = date.trim();
     var Meal_Date_Data2 = Meal_Date_Data1.match(/^\d{4}\D\d{1,2}\D\d{1,2}$/g) ? Meal_Date_Data1.split(/\D/g) : Meal_Date_Data1.match(/^\d{6,8}$/g) ? [Meal_Date_Data1.substr(0, 4), Meal_Date_Data1.substr(4, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2), Meal_Date_Data1.substr(Meal_Date_Data1.match(/^\d{6}$/g) ? 5 : 6, Meal_Date_Data1.match(/^\d{6}$/g) ? 1 : 2)] : [Meal_New_Date.getFullYear(), Meal_New_Date.getMonth() + 1, Meal_New_Date.getDate()];
@@ -556,6 +545,14 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
     return (Meal_Date.join('/') + '    [' + ['중식', '석식'][hour] + ']\n━━━━━━━━━━\n' + Meal_Data[hour + 1].split('CDATA[')[1].split(']]>')[0].split('<br/>').map((v) => {
       return '-' + v.replace(/bh|bml|bmj|bm|mj|ml|\*|\d*\./g, '').replace(/\(\)/g, '').trim();
     }).join('\n') + '\n━━━━━━━━━━');
+  }
+
+  function d_day(d_day_str, hide_percent) {
+    if (!Object.keys(d_day_list).includes(d_day_str))
+      return false;
+    hide_percent = (typeof hide_percent !== 'undefined') ? hide_percent : false;
+    var d_day_data = Math.ceil((new Date(d_day_list[d_day_str]) - new Date()) / 86400000);
+    return ('[' + d_day_str + ']\n━━━━━━━━━━\n' + (d_day_data > 0 ? 'D-' + d_day_data : d_day_data == 0 ? 'D-Day' : 'D+' + Math.abs(d_day_data)) + (hide_percent ? '' : '   (' + (((365 - d_day_data) / 365) * 100).toFixed(2) + '% 경과)'));
   }
 
   FT_P = Typo => {
