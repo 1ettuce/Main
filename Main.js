@@ -1,4 +1,4 @@
-//    Version 1.27-alpha8    //
+//    Version 1.27-alpha9    //
 const general = '/sdcard/msgbot/data/general/'
 const user = '/sdcard/msgbot/data/user/'
 Jsoup = org.jsoup.Jsoup
@@ -213,7 +213,6 @@ var Command_List = [{
 
 var User_Initialize_Confirmation = 0;
 var Send_Room = ['건전한 아이들', 'Room_1'];
-var Noti_Room = ['Noti_Room'];
 var User_Refusal = '사용자 정보를 불러오지 못했습니다.\n\'=내정보\' 로 정보를 확인해주세요.'
 var User_Format = [
   [0, 0],
@@ -228,7 +227,7 @@ function response(room, msg, sender, isGroupChat, replier, ImageDB, packageName,
   var Certified = ['이상수'].includes(sender);
 
   replier.markAsRead();
-  if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', 'Room_1', 'Room_2', 'Room_3'].concat(Noti_Room).includes(room)) return;
+  if (!['건전한 아이들', 'Test_Room_1', 'Test_Room_2', 'Test_Room_3', 'Room_1', 'Room_2', 'Room_3'].includes(room)) return;
 
   /******************ADMIN******************/
 
